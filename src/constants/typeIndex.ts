@@ -1,4 +1,5 @@
 import Color from "color"
+import { ReactNode, SetStateAction, Dispatch } from "react"
 // Pages Component Props
 
 type HomeProps = {
@@ -26,6 +27,8 @@ type ButtonProps = {
     iconPosition?: "top" | "bottom" | "left" | "right",
     showIcon?: boolean,
     showText?: boolean,
+    onClick?: () => void;
+    onHover?: () => void;
 }
 
 type NavBarProps = {
@@ -50,6 +53,39 @@ type SVGConstants = {
     width: number,
 }
 
+// Hooks
+
+// type Theme = "light" | "dark"
+
+type ThemeColors = {
+    primary: Color,
+    secondary: Color,
+    tertiary: Color,
+    accent1: Color,
+    accent2: Color,
+    background: Color,
+    onBackground: Color
+    
+    // accent: Color,
+    // accent2: Color,
+    // accent3: Color
+}
+
+type Theme = {
+    isDarkMode: boolean,
+    lightTheme: ThemeColors,
+    darkTheme: ThemeColors
+}
+
+type ThemeContextType = {
+    theme: Theme,
+    setMode: Dispatch<SetStateAction<Theme>>
+}
+
+type ThemeProviderProps = {
+    children: ReactNode
+}
+
 export type {
     HomeProps,
     AboutProps,
@@ -62,5 +98,9 @@ export type {
     SVGParams,
     SVGConstants,
     
-    ErrorComponentProps
+    ErrorComponentProps,
+
+    Theme,
+    ThemeContextType,
+    ThemeProviderProps
 }
