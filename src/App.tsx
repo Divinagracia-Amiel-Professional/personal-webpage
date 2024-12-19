@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import { Outlet } from 'react-router'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div className='title'>Home</div>
+      <Outlet />
     </>
   )
 }
