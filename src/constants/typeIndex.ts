@@ -12,12 +12,19 @@ type ProjectProps = {
 
 }
 
-//
+// Components
+
+type NavBarProps = {
+
+}
+
+type SVGParams = {
+
+}
 
 export type {
     HomeProps,
     AboutProps,
     ProjectProps,
-
-
+    NavBarProps
 }
