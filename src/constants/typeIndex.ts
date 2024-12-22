@@ -1,5 +1,5 @@
 import Color from "color"
-import { ReactNode, SetStateAction, Dispatch } from "react"
+import { ReactNode, SetStateAction, Dispatch, ReactElement } from "react"
 // Pages Component Props
 
 type HomeProps = {
@@ -23,12 +23,16 @@ type ErrorComponentProps = {
 type ButtonProps = {
     text: string,
     mode?: "navbar" | "transparent-bordered" | "solid",
-    icon?: SVGElement | HTMLElement,
+    icon?: ReactElement | null,
     iconPosition?: "top" | "bottom" | "left" | "right",
     showIcon?: boolean,
     showText?: boolean,
     onClick?: () => void;
     onHover?: () => void;
+}
+
+type ContactsProps = {
+
 }
 
 type NavBarProps = {
@@ -86,6 +90,10 @@ type ThemeProviderProps = {
     children: ReactNode
 }
 
+type PageWrapperProps = {
+    children: ReactNode
+}
+
 export type {
     HomeProps,
     AboutProps,
@@ -93,6 +101,8 @@ export type {
     NavBarProps,
 
     ButtonProps,
+    ContactsProps,
+    PageWrapperProps,
 
     multiColor,
     SVGParams,
@@ -102,5 +112,5 @@ export type {
 
     Theme,
     ThemeContextType,
-    ThemeProviderProps
+    ThemeProviderProps,
 }

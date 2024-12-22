@@ -88,30 +88,35 @@ button:focus-visible {
   align-self: stretch;
 
   position: relative;
+  padding-top: 200px;
 }
 
 .navbar{
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   align-self: stretch;
 
   box-sizing: border-box;
   padding-left: 10vw;
   padding-right: 10vw;
+  gap: 10vw;
 
-  min-height: 150px;
+  min-height: 100px;
   min-width: 100vw;
 
   position: fixed;
   top: 0;
+
 }
 
 .navbar-tabs-block{
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: stretch;
 
+  
 }
 
 .navbar-tabs-routes{
@@ -123,6 +128,9 @@ button:focus-visible {
 .custom-button{
   display: flex;
   box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 10px
 }
 
 @media (prefers-color-scheme: light) {   

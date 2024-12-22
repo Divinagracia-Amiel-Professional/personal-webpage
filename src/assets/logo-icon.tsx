@@ -23,6 +23,8 @@ const Logo = ({
     const horizontalScale = width * scale;
     const verticalScale = height * scale;
 
+    console.log(fill)
+
     if(fill.length < constants.colorLength){
     return <ErrorComponent
         message={`Input at least ${constants.colorLength} fills`}
@@ -31,8 +33,11 @@ const Logo = ({
 
     useEffect(() => {
         setFillstate(prevState => prevState.reverse())
+        console.log(invert)
     }, [invert])
-        
+
+    // console.log(invert)
+
     return (
         <svg 
             width={horizontalScale} 

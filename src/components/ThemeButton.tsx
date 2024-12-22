@@ -1,7 +1,8 @@
 import React, { useContext, ReactNode } from "react";
 import { Theme, ThemeContextType } from "../constants/typeIndex";
 import { ThemeContext } from "../hooks/themeProvider";
-import { LightModeIcon, DarkModeIcon } from "../constants/iconsIndex";
+import { LightModeIcon, DarkModeIcon, SunIcon, MoonIcon } from "../constants/iconsIndex";
+import Color from "color";
 
 const ThemeButton = () => {
     const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
@@ -16,7 +17,7 @@ const ThemeButton = () => {
         })
     }
 
-    const icon = !theme.isDarkMode ? <LightModeIcon /> : <DarkModeIcon />
+    const icon = theme.isDarkMode ? <SunIcon scale={1.5} fill={[Color("#F4EEA9"), Color("#A44A3F")]} /> : <MoonIcon scale={1.5} fill={[Color("#414066"), Color("#F4EEA9")]} />
 
     return <div className="button-theme"
         onClick={() => {

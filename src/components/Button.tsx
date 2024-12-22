@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { ButtonProps } from '../constants/typeIndex'
 
 const getStyles = (mode: string | undefined): React.CSSProperties => {
@@ -27,20 +27,66 @@ const getStyles = (mode: string | undefined): React.CSSProperties => {
     }
 }
 
-const CustomButtom = ({
-    text = 'text',
-    mode = 'solid'
-}: ButtonProps) => {
+interface ButtomWrapperProps extends ButtonProps {
+    children: ReactNode,
+}
+
+const ButtomWrapper = ({
+    children, 
+    mode, 
+    onClick = () => {}, 
+    iconPosition
+}: Omit<ButtomWrapperProps, 'text'>) => {
+    const childrenPositions = (iconPosition === "right" || iconPosition === "bottom") ? children : React.Children.toArray(children).reverse()
 
     return(
         <div 
             className='custom-button'
             style={{
+                flexDirection: (iconPosition === 'left' || iconPosition === 'right') ? 'row' : 'column' ,
                 ...getStyles(mode)
             }}
+            onClick={() => {
+                onClick()
+            }}
         >
-            <p className='custom-button-text'>{text}</p>
+            { childrenPositions }
         </div>
+    )
+}
+
+const CustomButtom = ({
+    text = 'text',
+    mode = 'solid',
+    onClick = () => {},
+    showText = true,
+    showIcon = false,
+    icon = null,
+    iconPosition = 'left'
+}: ButtonProps) => {
+
+    return(
+        <ButtomWrapper
+            mode={mode}
+            iconPosition={iconPosition}
+            onClick={onClick}
+        >
+            <p 
+                className='custom-button-text'
+                style={{
+                    display: showText ? 'block' : 'none'
+                }}
+            >
+                {text}
+            </p>
+            <div
+                style={{
+                    display: showIcon ? 'block' : 'none' 
+                }}
+            >
+                { icon ? icon : null }
+            </div>
+        </ButtomWrapper>
     )
 }
 

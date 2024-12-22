@@ -1,28 +1,23 @@
 import React, { useContext } from "react";
 import { HomeProps } from "../constants/typeIndex";
-import { Logo } from "../constants/iconsIndex";
-import { NavBar, ThemeButton } from "../components/componentIndex";
+import { Logo, MoonIcon, SunIcon } from "../constants/iconsIndex";
+import { NavBar, ThemeButton, PageWrapper } from "../components/componentIndex";
 import Color from "color";
 import { ThemeContext } from "../hooks/themeProvider"
 import { ThemeContextType, Theme } from "../constants/typeIndex";
 
 const Home = (props: HomeProps) => {
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
+    // const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
 
     return (
-        <div className="page-wrapper" style={{
-            background: 'linear-gradient(15deg, #A44A3F, #F4EEA9)',
-            backgroundSize: '150% 125%',
-            backgroundAttachment: 'fixed',
-            backgroundPosition: "100% 50%"
-        }}>
-            <NavBar />
-            <ThemeButton />
+        <PageWrapper>
             <div className='title'>
                 Home
             </div>
-            <Logo scale={10} fill={[Color('black'), Color('white')]} invert={false}/>
-        </div>
+            <Logo scale={10} fill={[Color('black'), Color('white')]}/>
+            <MoonIcon scale={10} fill={[Color('black'), Color('white')]} />
+            <SunIcon scale={10} fill={[Color('black'), Color('white')]}/>
+        </PageWrapper>
     )
 }
 
