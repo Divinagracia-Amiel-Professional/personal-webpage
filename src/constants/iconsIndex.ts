@@ -7,6 +7,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
+import MenuIcon from '@mui/icons-material/Menu';
 
 export {
     Logo,
@@ -17,5 +18,6 @@ export {
     LinkedInIcon,
     GitHubIcon,
     PhoneIcon,
-    EmailIcon
+    EmailIcon,
+    MenuIcon
 }

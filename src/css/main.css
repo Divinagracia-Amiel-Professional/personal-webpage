@@ -1,3 +1,5 @@
+@import url('fonts.css');
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -83,12 +85,11 @@ button:focus-visible {
   display: flex;
   flex: 1 0 0;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   align-self: stretch;
 
   position: relative;
-  padding-top: 200px;
 }
 
 .navbar{
@@ -98,14 +99,14 @@ button:focus-visible {
   align-self: stretch;
 
   box-sizing: border-box;
-  padding-left: 10vw;
-  padding-right: 10vw;
+  padding-left: 15vw;
+  padding-right: 15vw;
   gap: 10vw;
 
   min-height: 100px;
   min-width: 100vw;
 
-  position: fixed;
+  position: sticky;
   top: 0;
 
 }
@@ -131,6 +132,21 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   gap: 10px
+}
+
+.contacts-block{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px;
+  gap: 0px;
+  border-radius: 20px;
+
+  position: fixed;
+  left: 25px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 @media (prefers-color-scheme: light) {   

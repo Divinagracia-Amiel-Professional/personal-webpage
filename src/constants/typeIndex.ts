@@ -1,5 +1,5 @@
 import Color from "color"
-import { ReactNode, SetStateAction, Dispatch, ReactElement } from "react"
+import { ReactNode, SetStateAction, Dispatch, ReactElement, KeyboardEvent, MouseEvent } from "react"
 // Pages Component Props
 
 type HomeProps = {
@@ -20,14 +20,20 @@ type ErrorComponentProps = {
 
 // Components
 
+type PageWrapperProps = {
+    children: ReactNode
+}
+
+// type DrawerToggleHandler = (event: React.KeyboardEvent | React.MouseEvent) => void;
+
 type ButtonProps = {
     text: string,
-    mode?: "navbar" | "transparent-bordered" | "solid",
+    mode?: "navbar" | "transparent-bordered" | "solid" | "icon-only",
     icon?: ReactElement | null,
     iconPosition?: "top" | "bottom" | "left" | "right",
     showIcon?: boolean,
     showText?: boolean,
-    onClick?: () => void;
+    onClick?: () => void | ((event: KeyboardEvent | MouseEvent) => void)
     onHover?: () => void;
 }
 
@@ -59,7 +65,10 @@ type SVGConstants = {
 
 // Hooks
 
-// type Theme = "light" | "dark"
+type WindowDimensions = {
+    height: number,
+    width: number
+}
 
 type ThemeColors = {
     primary: Color,
@@ -90,10 +99,6 @@ type ThemeProviderProps = {
     children: ReactNode
 }
 
-type PageWrapperProps = {
-    children: ReactNode
-}
-
 export type {
     HomeProps,
     AboutProps,
@@ -113,4 +118,5 @@ export type {
     Theme,
     ThemeContextType,
     ThemeProviderProps,
+    WindowDimensions
 }

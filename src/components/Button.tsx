@@ -17,6 +17,10 @@ const getStyles = (mode: string | undefined): React.CSSProperties => {
                 paddingLeft: 40,
                 paddingRight: 40
             })
+        case 'icon-only':
+            return ({
+                padding: 10
+            })
         default:
             return ({
                 paddingTop: 10,
@@ -35,7 +39,9 @@ const ButtomWrapper = ({
     children, 
     mode, 
     onClick = () => {}, 
-    iconPosition
+    iconPosition,
+    showIcon,
+    showText
 }: Omit<ButtomWrapperProps, 'text'>) => {
     const childrenPositions = (iconPosition === "right" || iconPosition === "bottom") ? children : React.Children.toArray(children).reverse()
 
@@ -43,6 +49,7 @@ const ButtomWrapper = ({
         <div 
             className='custom-button'
             style={{
+                display: showIcon || showText ? 'flex' : 'none',
                 flexDirection: (iconPosition === 'left' || iconPosition === 'right') ? 'row' : 'column' ,
                 ...getStyles(mode)
             }}
@@ -67,6 +74,8 @@ const CustomButtom = ({
 
     return(
         <ButtomWrapper
+            showText={showText}
+            showIcon={showIcon}
             mode={mode}
             iconPosition={iconPosition}
             onClick={onClick}

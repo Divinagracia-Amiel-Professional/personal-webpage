@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useContext } from 'react'
 import { Theme, ThemeContextType, ThemeProviderProps, PageWrapperProps } from '../constants/typeIndex'
 import { ThemeContext } from '../hooks/themeProvider'
 import NavBar from './NavBar'
+import Contacts from './Contacts'
 import Color from 'color'
 
 const PageWrapper = ({ children }: ThemeProviderProps) => {  
@@ -15,6 +16,7 @@ const PageWrapper = ({ children }: ThemeProviderProps) => {
             backgroundPosition: !theme.isDarkMode ? "100% 50%" : "top"
         }}>
             <NavBar />
+            <Contacts />
             { children }
         </div>  
     )
