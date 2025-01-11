@@ -5,7 +5,7 @@ import NavBar from './NavBar'
 import Contacts from './Contacts'
 import Color from 'color'
 
-const PageWrapper = ({ children }: ThemeProviderProps) => {  
+const PageWrapper = ({ children }: PageWrapperProps) => {  
     const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
 
     return (

@@ -28,7 +28,12 @@ type PageWrapperProps = {
 
 type ButtonProps = {
     text: string,
-    mode?: "navbar" | "transparent-bordered" | "solid" | "icon-only",
+    textColor?: Color,
+    isTextBold?: boolean,
+    bgColor?: Color | 'transparent',
+    borderColor?: Color | 'none',
+    isBorderCurved?: boolean,
+    mode?: "navbar" | "transparent-bordered" | "solid" | "icon-only" | "resume",
     icon?: ReactElement | null,
     iconPosition?: "top" | "bottom" | "left" | "right",
     showIcon?: boolean,

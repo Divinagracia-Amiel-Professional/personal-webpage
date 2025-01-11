@@ -15,6 +15,30 @@ p {
   padding: 0;
 }
 
+.regSize{
+  font-size: 16px;
+}
+
+.large{
+  font-size: 20px;
+}
+
+.x-large{
+  font-size: 24px;
+}
+
+.xx-large{
+  font-size: 32px;
+}
+
+.xxx-large{
+  font-size: 48px;
+}
+
+.xxx-larger{
+  font-size: 64px;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -116,7 +140,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   align-self: stretch;
-
+  gap: 25px;
   
 }
 
@@ -131,7 +155,9 @@ button:focus-visible {
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
-  gap: 10px
+  gap: 10px;
+
+  cursor: pointer;
 }
 
 .contacts-block{
@@ -149,6 +175,114 @@ button:focus-visible {
   transform: translateY(-50%);
 }
 
+.home-content{
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: space-around;
+  padding-left: 20vw;
+  padding-right: 20vw;
+  /* margin: auto; */
+  /* gap: 5vw; */
+}
+
+.home-intro-text{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+}
+
+.home-img-container{
+  width: 400px;
+  height: 500px;
+  border-radius: 125px; /* Makes the container circular */
+  overflow: hidden; /* Hides the overflow of the image */
+  display: flex; /* Center the image within the circle */
+  align-items: center;
+  justify-content: center;
+}
+
+.home-img-container img{
+  width: 100%; /* Scale image to fill the container */
+  height: 100%; /* Scale image to fill the container */
+  object-fit: cover; /* Ensures the image is cropped appropriately */
+}
+
+.projects-content{
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: flex-start;
+  padding-top: 4vw;
+  padding-left: 10vw;
+  padding-right: 10vw;
+  padding-bottom: 20vh;
+  gap: 100px;
+  /* margin: auto; */
+  /* gap: 5vw; */
+}
+
+.projects-header-container{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* align-self: stretch; */
+}
+
+.project-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.project-details {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  justify-content: center;
+  gap: 10px;
+}
+
+.project-imgs {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  align-self: stretch;
+  justify-content: center;
+  gap: 20px;
+}
+
+.project-details-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-left: 60px;
+  padding-right: 60px;
+
+  text-align: center;
+
+  /* border-bottom: 2px solid white; */
+}
+
+.project-details-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
 @media (prefers-color-scheme: light) {   
   :root {
     color: #213547;
@@ -159,5 +293,17 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .home-content{
+    flex-direction: column-reverse;
+    gap: 5vw;
+  }
+
+  .home-img-container{
+    width: 200px;
+    height: 300px;
   }
 }

@@ -1,5 +1,5 @@
 import React, { CSSProperties, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { NavBarProps } from "../constants/typeIndex";
 import { Theme, ThemeContextType } from "../constants/typeIndex";
 import { ThemeContext } from "../hooks/themeProvider";
@@ -17,10 +17,30 @@ const getPhoneStyling: CSSProperties = {
 const NavBar = (props: NavBarProps) => {
     const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
     const navigate = useNavigate()
+    const location = useLocation()
+
 
     const { height, width } = useWindowDimensions()
 
     console.log(`h: ${height} w: ${width}`)
+    const textFillLogic = !theme.isDarkMode ? theme.lightTheme.secondary : theme.darkTheme.onBackground
+    const selectedTextFillLogic = !theme.isDarkMode ? theme.lightTheme.tertiary : theme.darkTheme.secondary
+
+    const getTextFill = <T,>(pathName: T) => {
+        if(pathName === location.pathname){
+            return selectedTextFillLogic
+        } else {
+            return textFillLogic
+        }
+    }
+
+    const getBGFill = <T,>(pathName: T) => {
+        if(pathName === location.pathname){
+            return !theme.isDarkMode ? theme.lightTheme.secondary : theme.darkTheme.onBackground
+        } else {
+            return 'transparent'
+        }
+    }
 
     return (
         <div className="navbar" style={{
@@ -48,19 +68,33 @@ const NavBar = (props: NavBarProps) => {
             }}>
                 <div className="navbar-tabs-routes">
                     <CustomButtom 
+                        mode="navbar"
                         text={"About"} 
                         onClick={() => {
                             navigate("/about")
                         }}
+                        textColor={getTextFill('/about')}
+                        bgColor={getBGFill('/about')}
+                        isTextBold={location.pathname === '/about'}
                     />
                     <CustomButtom 
+                        mode="navbar"
                         text={"Projects"}
                         onClick={() => {
                             navigate("/projects")
                         }}
+                        textColor={getTextFill('/projects')}
+                        bgColor={getBGFill('/projects')}
+                        isTextBold={location.pathname === '/projects'}
                     />
                 </div>
-                <CustomButtom text={"Resume"} />
+                <CustomButtom 
+                    mode='resume'
+                    text={"Resume"}
+                    borderColor={textFillLogic}
+                    textColor={textFillLogic}
+                    isBorderCurved={true}
+                 />
             </div>
             <CollapsableNavbarDrawer />
             <ThemeButton />

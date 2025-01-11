@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import { ButtonProps } from '../constants/typeIndex'
+import Color from 'color'
 
 const getStyles = (mode: string | undefined): React.CSSProperties => {
     switch(mode){
@@ -21,12 +22,47 @@ const getStyles = (mode: string | undefined): React.CSSProperties => {
             return ({
                 padding: 10
             })
+        case 'resume':
+            return({
+                paddingTop: 5,
+                paddingBottom: 5,
+                paddingLeft: 40,
+                paddingRight: 40,
+            })
         default:
             return ({
                 paddingTop: 10,
                 paddingBottom: 10,
                 paddingLeft: 40,
-                paddingRight: 40
+                paddingRight: 40,
+                borderRadius: 15,
+            })
+    }
+}
+
+const getTextStyle = (mode: string | undefined): React.CSSProperties => {
+    switch(mode){
+        case 'navbar':
+            return ({
+                fontSize: 16,
+            })
+        case 'transparent-bordered':
+            return ({
+                fontSize: 16
+            })
+        case 'icon-only':
+            return ({
+                
+            })
+        case 'resume': {
+            return({
+                fontSize: 20,
+                fontWeight: 700
+            })
+        }
+        default:
+            return ({
+                
             })
     }
 }
@@ -41,7 +77,11 @@ const ButtomWrapper = ({
     onClick = () => {}, 
     iconPosition,
     showIcon,
-    showText
+    showText,
+    borderColor = 'none',
+    bgColor = 'transparent',
+    textColor = Color('white'),
+    isBorderCurved = false
 }: Omit<ButtomWrapperProps, 'text'>) => {
     const childrenPositions = (iconPosition === "right" || iconPosition === "bottom") ? children : React.Children.toArray(children).reverse()
 
@@ -51,6 +91,9 @@ const ButtomWrapper = ({
             style={{
                 display: showIcon || showText ? 'flex' : 'none',
                 flexDirection: (iconPosition === 'left' || iconPosition === 'right') ? 'row' : 'column' ,
+                border: borderColor !== 'none' ? `2px solid ${borderColor.string()}` : 0,
+                borderRadius: isBorderCurved ? 15 : 0,
+                background: bgColor !== 'transparent' ? bgColor.string() : 'transparent',
                 ...getStyles(mode)
             }}
             onClick={() => {
@@ -69,7 +112,12 @@ const CustomButtom = ({
     showText = true,
     showIcon = false,
     icon = null,
-    iconPosition = 'left'
+    iconPosition = 'left',
+    borderColor = 'none',
+    bgColor = 'transparent',
+    textColor = Color('white'),
+    isBorderCurved = false,
+    isTextBold = false,
 }: ButtonProps) => {
 
     return(
@@ -79,18 +127,24 @@ const CustomButtom = ({
             mode={mode}
             iconPosition={iconPosition}
             onClick={onClick}
+            borderColor={borderColor}
+            bgColor={bgColor}
+            isBorderCurved={isBorderCurved}
         >
             <p 
-                className='custom-button-text'
+                className='custom-button-text lexend-regular large'
                 style={{
-                    display: showText ? 'block' : 'none'
+                    display: showText ? 'block' : 'none',
+                    color: textColor.string(),
+                    fontWeight: isTextBold ? 700 : 400,
+                    ...getTextStyle(mode)
                 }}
             >
                 {text}
             </p>
             <div
                 style={{
-                    display: showIcon ? 'block' : 'none' 
+                    display: showIcon ? 'flex' : 'none' 
                 }}
             >
                 { icon ? icon : null }
