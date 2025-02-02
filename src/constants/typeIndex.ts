@@ -21,7 +21,8 @@ type ErrorComponentProps = {
 // Components
 
 type PageWrapperProps = {
-    children: ReactNode
+    children: ReactNode,
+    title?: string | null,
 }
 
 // type DrawerToggleHandler = (event: React.KeyboardEvent | React.MouseEvent) => void;

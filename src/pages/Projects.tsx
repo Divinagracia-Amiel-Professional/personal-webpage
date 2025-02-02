@@ -87,22 +87,12 @@ const Projects = (props: ProjectProps) => {
     const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
 
     return (
-        <PageWrapper>
+        <PageWrapper
+            title='Projects'
+        >
             <div
                 className="projects-content"
             >
-                <div
-                    className="projects-header-container"
-                >
-                    <p 
-                        className="xx-large lexend-bold"
-                        style={{
-                            color: !theme.isDarkMode ? theme.lightTheme.accent1.string() : theme.darkTheme.primary.string()
-                        }}
-                    >
-                        Projects
-                    </p>
-                </div>
                 {
                     projectsObjects.map((project, index, arr) => {
                         return(
