@@ -1,36 +1,116 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ProjectProps } from "../constants/typeIndex";
 import { PageWrapper, CustomButtom} from "../components/componentIndex";
 import { ThemeContext } from "../hooks/themeProvider";
 import { ThemeContextType } from "../constants/typeIndex";
 import { ChevronRightRounded } from "@mui/icons-material";
+import { Modal } from "@mui/material";
+import { 
+    OverloadedLogo,
+    HomeAssistantLogo,
+    OverloadedImg1,
+    OverloadedImg2,
+    OverloadedImg3,
+    OverloadedImg4,
+    OverloadedImg5,
+    OverloadedImg6,
+    HomeAssistantImg1,
+    HomeAssistantImg2,
+    HomeAssistantImg3,
+    HomeAssistantImg4,
+    HomeAssistantImg5,
+    HomeAssistantImg6
+} from "../constants/imageIndex";
 
 type ProjectBlockProps = {
     index: number,
     title: string,
     details: string,
-    imgUrls?: string[],
+    logoUrl?: string,
+    imgUrls: string[],
     link?: string,
+}
+
+interface SliderModalProps extends Pick<ProjectBlockProps, 'imgUrls'>{
+    open: boolean,
+    setToggle: () => void
 }
 
 const projectsObjects: Omit<ProjectBlockProps, 'index'>[] = [
     {
         title: "Overloaded",
-        details: "Overloaded is a mobile fitness app designed to optimize workout routines and enhance overall well-being through the proven training system of progressive overloading. The application serves as a progressive overload tracker and offers features that are indispensable tools not only for muscle-building enthusiasts but also powerlifters, weightlifters, etc. This app utilized React Native to develop the mobile application and Google Firebase for an online database and Redux-Persist for offline storage. My role in this project was as the lead frontend and backend developer."
+        details: "Overloaded is a mobile fitness app designed to optimize workout routines and enhance overall well-being through the proven training system of progressive overloading. The application serves as a progressive overload tracker and offers features that are indispensable tools not only for muscle-building enthusiasts but also powerlifters, weightlifters, etc. This app utilized React Native to develop the mobile application and Google Firebase for an online database and Redux-Persist for offline storage. My role in this project was as the lead frontend and backend developer.",
+        logoUrl: OverloadedLogo,
+        imgUrls: [
+            OverloadedImg1,
+            OverloadedImg2,
+            OverloadedImg3,
+            OverloadedImg4,
+            OverloadedImg5,
+            OverloadedImg6
+        ]
     },
     {
         title: "Intelliwatt: Home Automation and Energy Monitoring System",
-        details: "Intelliwatt is a web application that was developed for our thesis project, which is a viable and efficient home energy management system that has the capability to monitor, log, control, alarm and manage household devices and their variables. This app utilized the open-source home automation framework ‘Home Assistant’ for data gathering and control. React was then used for creating an intuitive custom dashboard using REST API to receive data from Home Assistant. My role in this project was as the lead frontend and backend developer for the web application side."
+        details: "Intelliwatt is a web application that was developed for our thesis project, which is a viable and efficient home energy management system that has the capability to monitor, log, control, alarm and manage household devices and their variables. This app utilized the open-source home automation framework ‘Home Assistant’ for data gathering and control. React was then used for creating an intuitive custom dashboard using REST API to receive data from Home Assistant. My role in this project was as the lead frontend and backend developer for the web application side.",
+        logoUrl: HomeAssistantLogo,
+        imgUrls: [
+            HomeAssistantImg1,
+            HomeAssistantImg2,
+            HomeAssistantImg3,
+            HomeAssistantImg4,
+            HomeAssistantImg5,
+            HomeAssistantImg6,
+        ]
     }
 ]
+
+const SliderModal = ({
+    open,
+    setToggle,
+    imgUrls
+}: SliderModalProps) => {
+
+    return(
+        <Modal
+            open={open}
+            onClose={setToggle}
+        >
+            <div
+                className="page-wrapper"
+                style={{
+                    minHeight: '100%',
+                    minWidth: '50vw',
+                    justifySelf: 'center',
+                    alignSelf: 'center',
+                    border: 0
+                }}
+            >
+                <div
+                    className="page-wrapper"
+                    style={{
+                        justifyContent: 'center'
+                    }}
+                >
+                    <p>slider</p>
+                </div>
+            </div>
+        </Modal>
+    )
+}
 
 const ProjectBlock = ({
     title,
     index,
     details,
     imgUrls,
+    logoUrl,
     link
 }: ProjectBlockProps) => {
+    const [ open, setOpen ] = useState<boolean>(false) 
+    const setToggle = () => {
+        setOpen(prevState => !prevState)
+    }
 
     const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
     const textFill = !theme.isDarkMode ? theme.lightTheme.secondary.string() : theme.darkTheme.onBackground.string()
@@ -45,6 +125,11 @@ const ProjectBlock = ({
             <div
                 className="project-details"
             >
+                <div
+                    className="project-logo-img-container"
+                >
+                    <img src={logoUrl} alt={logoUrl} />
+                </div>
                 <p
                     className="project-details-title x-large lexend-bold"
                     style={{
@@ -76,9 +161,20 @@ const ProjectBlock = ({
             </div>
             <div
                 className="project-imgs"
+                onClick={() => {
+                    const hasManyImages = imgUrls?.length > 3
+                    if(hasManyImages){
+                        setToggle()
+                    }
+                }}
             >
                 <p>imgs</p>
             </div>
+            <SliderModal 
+                open={open}
+                setToggle={setToggle}
+                imgUrls={imgUrls}
+            />
         </div>
     )
 }
@@ -101,6 +197,8 @@ const Projects = (props: ProjectProps) => {
                                 index={index}
                                 title={project.title}
                                 details={project.details}
+                                imgUrls={project.imgUrls}
+                                logoUrl={project.logoUrl}
                             />
                         )
                     })

@@ -59,16 +59,17 @@ const InternshipValues: Extract<AboutBlockProps, { mode: "internship" }>[] = [
         mode: "internship",
         role: "IT & Web Maintenance",
         accomplishments: [
-            "Creating Logos, Footers, Headers, etc. for projects under Digital Automations",
-            "Established a Branding Kit for my assigned project",
-            "Prototyped and designed the UX flow and UI of a booking system",
-            "Contributed to the management of the main website of a project using WordPress"
+            "Research of technologies that can be implemented on company sites",
+            "Payment System - API Testing",
+            "Client Inquiries",
+            "Creating banners for AHEAD under IT",
+            "Troubleshooting Personal Computers",
         ],
         toolsUsed: [
             "Figma",
-            "Directual",
-            "WordPress",
-            "DrawIO"
+            "Magpie Payment System",
+            "VSCode",
+            "Postman"
         ]
     }, 
 ]
@@ -110,9 +111,9 @@ const AboutBlock = ({
                 <p className="medium roboto-mono-regular" style={{color: normalTextFill}}>Accomplishments: </p>
                 <ul>
                     {
-                        accomplishments ? accomplishments.map(item => {
+                        accomplishments ? accomplishments.map((item, index) => {
                             return(
-                                <li className="medium roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
+                                <li key={index} className="medium roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
                             )
                         }) :
                         null
@@ -123,9 +124,9 @@ const AboutBlock = ({
                 <p className="medium roboto-mono-regular" style={{color:normalTextFill}}>Tools Used: </p>
                 <ul>
                     {
-                        toolsUsed ? toolsUsed.map(item => {
+                        toolsUsed ? toolsUsed.map((item, index) => {
                             return(
-                                <li className="medium roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
+                                <li key={index} className="medium roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
                             )
                         }) :
                         null
@@ -186,6 +187,7 @@ const About = (props: AboutProps) => {
                     InternshipValues.map(internship => {
                         return(
                             <AboutBlock 
+                                key={internship.title}
                                 title={internship.title}
                                 imgRef={internship.imgRef}
                                 mode={internship.mode}
