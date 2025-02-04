@@ -94,6 +94,9 @@ const NavBar = (props: NavBarProps) => {
                     borderColor={textFillLogic}
                     textColor={textFillLogic}
                     isBorderCurved={true}
+                    onClick={() => {
+                        window.open("https://drive.google.com/file/d/1Ps4DJcIw1zJGanGCM5z-ZMRqJYZl-8WL/view?usp=sharing", "_blank", "noopener,noreferrer");
+                    }}
                  />
             </div>
             <CollapsableNavbarDrawer />

@@ -34,7 +34,7 @@ type ButtonProps = {
     bgColor?: Color | 'transparent',
     borderColor?: Color | 'none',
     isBorderCurved?: boolean,
-    mode?: "navbar" | "transparent-bordered" | "solid" | "icon-only" | "resume",
+    mode?: "navbar" | "transparent-bordered" | "solid" | "icon-only" | "resume" | "icon-with-BG",
     icon?: ReactElement | null,
     iconPosition?: "top" | "bottom" | "left" | "right",
     showIcon?: boolean,

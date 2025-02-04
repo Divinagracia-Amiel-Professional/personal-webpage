@@ -91,7 +91,7 @@ const AboutBlock = ({
     const detailsBlock: JSX.Element = mode === 'single-text' ? (
         <>
             <p
-                className="medium roboto-mono-regular"
+                className="regSize roboto-mono-regular"
                 style={{ color: normalTextFill }}
             >
                 {
@@ -106,14 +106,14 @@ const AboutBlock = ({
         </>
     ) : (
         <>
-            <p className="medium roboto-mono-regular" style={{color: normalTextFill}}>Role: {role}</p>
+            <p className="regSize roboto-mono-regular" style={{color: normalTextFill}}>Role: {role}</p>
             <div className="list-block">
-                <p className="medium roboto-mono-regular" style={{color: normalTextFill}}>Accomplishments: </p>
+                <p className="regSize roboto-mono-regular" style={{color: normalTextFill}}>Accomplishments: </p>
                 <ul>
                     {
                         accomplishments ? accomplishments.map((item, index) => {
                             return(
-                                <li key={index} className="medium roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
+                                <li key={index} className="regSize roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
                             )
                         }) :
                         null
@@ -121,12 +121,12 @@ const AboutBlock = ({
                 </ul>
             </div>
             <div className="list-block">
-                <p className="medium roboto-mono-regular" style={{color:normalTextFill}}>Tools Used: </p>
+                <p className="regSize roboto-mono-regular" style={{color:normalTextFill}}>Tools Used: </p>
                 <ul>
                     {
                         toolsUsed ? toolsUsed.map((item, index) => {
                             return(
-                                <li key={index} className="medium roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
+                                <li key={index} className="regSize roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
                             )
                         }) :
                         null

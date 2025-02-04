@@ -29,6 +29,12 @@ const getStyles = (mode: string | undefined): React.CSSProperties => {
                 paddingLeft: 40,
                 paddingRight: 40,
             })
+        case 'icon-with-BG':
+            return({
+                padding: 10,
+                flex: '0 0 0',
+                alignSelf: 'auto'
+            })
         default:
             return ({
                 paddingTop: 10,

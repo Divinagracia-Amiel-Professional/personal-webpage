@@ -1,0 +1,18 @@
+.alice-carousel{
+    /* display: flex; */
+    margin: 0;
+}
+
+.alice-carousel__wrapper{
+    display: flex;
+    /* align-self: stretch; */
+    /* align-self: center; */
+}
+
+/* .alice-carousel .alice-carousel{
+    justify-content: center;
+} */
+
+.alice-carousel__stage-item.__active{
+    border: 1px solid 'white'
+}
