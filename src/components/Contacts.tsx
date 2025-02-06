@@ -4,7 +4,7 @@ import CustomButtom from "./Button";
 import Color from "color";
 import { Theme, ThemeContextType } from "../constants/typeIndex";
 import { ThemeContext } from "../hooks/themeProvider";
-import { useWindowDimensions } from "../hooks/hooksIndex";
+import { useWindowDimensions, useThemeContext } from "../hooks/hooksIndex";
 import { 
     LinkedInIcon,
     PhoneIcon, 
@@ -22,36 +22,32 @@ type ContactButtonItemsType = {
 
 const Contacts = (props: ContactsProps) => {
     const [ isExpanded, setIsExpanded ] = useState<boolean>(false)
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
+    const { theme, setMode } = useThemeContext()
     const { width, height } = useWindowDimensions()
 
     const toggleExpand = () => {
         setIsExpanded(prevState => !prevState)
     }
 
-    const IconFillLogic = !theme.isDarkMode ? theme.lightTheme.background.string() : theme.darkTheme.tertiary.string()
-    const TextFillLogic = !theme.isDarkMode ? theme.lightTheme.background.string() : theme.darkTheme.tertiary.string()
-    const BGFillLogic = !theme.isDarkMode ? theme.lightTheme.secondary.string() : theme.darkTheme.onBackground.string()
-
     const ContactButtonItems: ContactButtonItemsType[] = [
         {
             text: 'LinkedIn',
-            icon: <LinkedInIcon sx={{ color: IconFillLogic, fontSize: 35 }} />,
+            icon: <LinkedInIcon sx={{ color: theme.components.contactButtons.iconFill?.toString(), fontSize: 35 }} />,
             link: 'https://www.linkedin.com/in/amiel-divinagracia-7528a0241/'
         },
         {
             text: 'Phone',
-            icon: <PhoneIcon sx={{ color: IconFillLogic, fontSize: 35 }} />,
+            icon: <PhoneIcon sx={{ color: theme.components.contactButtons.iconFill?.toString(), fontSize: 35 }} />,
             link: '09063976957'
         },
         {
             text: 'Email',
-            icon: <EmailIcon sx={{ color: IconFillLogic, fontSize: 35 }} />,
+            icon: <EmailIcon sx={{ color: theme.components.contactButtons.iconFill?.toString(), fontSize: 35 }} />,
             link: 'https://mail.google.com/mail/u/0/?view=cm&fs=1&to=amielosias12345@gmail.com'
         },
         {
             text: 'GitHub',
-            icon: <GitHubIcon sx={{ color: IconFillLogic, fontSize: 35 }} />,
+            icon: <GitHubIcon sx={{ color: theme.components.contactButtons.iconFill?.toString(), fontSize: 35 }} />,
             link: 'https://github.com/Divinagracia-Amiel-Professional'
         }
     ]
@@ -62,7 +58,7 @@ const Contacts = (props: ContactsProps) => {
         <div
             className="contacts-block"
             style={{
-                background: BGFillLogic
+                background: theme.components.contactButtons.backgroundFill.toString()
             }}
         >
             <div
@@ -76,12 +72,12 @@ const Contacts = (props: ContactsProps) => {
                 }}
             >
                 {
-                    ContactButtonItems.map(contactItem => {
+                    ContactButtonItems.map((contactItem, index)=> {
                         const contactLinkText = contactItem.text === 'Email' ? contactItem.link.slice(50) : contactItem.link
-
 
                         return(
                             <div
+                                key={index}
                                 style={{
                                     display: 'flex',
                                     flexDirection: 'row',
@@ -99,6 +95,8 @@ const Contacts = (props: ContactsProps) => {
                                     iconPosition="left"
                                     showText={false}
                                     showIcon={true}
+                                    hoverIconColor={theme.components.contactButtons.iconHoverFill}
+                                    isBorderCurved 
                                     icon={contactItem.icon}
                                     onClick={() => {
                                         if(contactItem.text !== 'Phone'){
@@ -114,7 +112,7 @@ const Contacts = (props: ContactsProps) => {
                                         display: isExpanded ? 'block' : 'none', 
                                         paddingRight: 15, 
                                         wordWrap: 'break-word',
-                                        color: TextFillLogic,
+                                        color: theme.components.contactButtons.textFill.toString(),
                                     }}
                                 >
                                     {contactLinkText}
@@ -127,7 +125,7 @@ const Contacts = (props: ContactsProps) => {
                     style={{
                         border: 0,
                         width: isExpanded ? '70%' : '70%',
-                        borderTop: `1px solid ${TextFillLogic}`,
+                        borderTop: `1px solid ${theme.components.contactButtons.textFill.toString()}`,
                         margin: '10px 0',
                     }}
                 />
@@ -137,10 +135,11 @@ const Contacts = (props: ContactsProps) => {
                     iconPosition="right"
                     showText={false}
                     showIcon={true}
+                    hoverIconColor={theme.components.contactButtons.iconHoverFill}
                     icon={
                         isExpanded ? 
-                            <CloseFullscreenRounded sx={{ color: IconFillLogic, fontSize: 25 }} /> :
-                            <OpenInFullRounded sx={{ color: IconFillLogic, fontSize: 25 }} />
+                            <CloseFullscreenRounded sx={{ color: theme.components.contactButtons.iconFill?.toString(), fontSize: 25 }} /> :
+                            <OpenInFullRounded sx={{ color: theme.components.contactButtons.iconFill?.toString(), fontSize: 25 }} />
                     }
                     onClick={toggleExpand}
                 />

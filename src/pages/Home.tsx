@@ -7,19 +7,14 @@ import Color from "color";
 import { ThemeContext } from "../hooks/themeProvider"
 import { ThemeContextType, Theme } from "../constants/typeIndex";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useWindowDimensions } from "../hooks/hooksIndex";
+import { useWindowDimensions, useThemeContext } from "../hooks/hooksIndex";
 
 const Home = (props: HomeProps) => {
-    // const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
+    const { theme, setMode } = useThemeContext()
     const { height, width } = useWindowDimensions()
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
     const navigate = useNavigate()
     
-    const normalTextFill = !theme.isDarkMode ? theme.lightTheme.secondary.string() : theme.darkTheme.onBackground.string() 
-    const emphasizedFill = !theme.isDarkMode ? theme.lightTheme.accent1.string() : theme.darkTheme.primary.string()
-    const buttonTextFill = !theme.isDarkMode ? theme.lightTheme.background : theme.darkTheme.secondary
-    const buttonFill = !theme.isDarkMode ? theme.lightTheme.primary : theme.darkTheme.primary
-
+    
     return (
         <PageWrapper>
             <div
@@ -33,15 +28,15 @@ const Home = (props: HomeProps) => {
                 >
                     <p
                         className="x-large roboto-mono-regular"
-                        style={{ color: normalTextFill }}
+                        style={{ color: theme.components.contentText.textFill.toString() }}
                     >
-                        Hello World, I'm <br/><span style={{color: emphasizedFill}} className="xxx-large roboto-mono-bold">Amiel Divinagracia</span>.
+                        Hello World, I'm <br/><span style={{color: theme.components.contentText.emphasizedFill.toString()}} className="xxx-large roboto-mono-bold">Amiel Divinagracia</span>.
                     </p>
                     <p
                         className="x-large roboto-mono-regular"
-                        style={{ color: normalTextFill }}
+                        style={{ color: theme.components.contentText.textFill.toString() }}
                     >
-                        An Aspiring <br/><span style={{color: emphasizedFill}} className="xxx-large roboto-mono-bold">Developer</span>.
+                        An Aspiring <br/><span style={{color: theme.components.contentText.emphasizedFill.toString()}} className="xxx-large roboto-mono-bold">Developer</span>.
                     </p>
                     <CustomButtom 
                         mode='transparent-bordered'
@@ -50,9 +45,11 @@ const Home = (props: HomeProps) => {
                         showIcon={true}
                         iconPosition="right"
                         // borderColor={textFillLogic}
-                        bgColor={buttonFill}
-                        textColor={buttonTextFill}
-                        icon={<ChevronRightRounded sx={{color: buttonTextFill.string()}} />}
+                        bgColor={theme.components.button.backgroundFill}
+                        textColor={theme.components.button.textFill}
+                        hoverIconColor={theme.components.button.iconHoverFill as Color}
+                        hoverBgColor={theme.components.button.backgroundHoverFill}
+                        icon={<ChevronRightRounded sx={{color: theme.components.button.textFill.toString()}} />}
                         isBorderCurved={true}
                         onClick={() => {
                             navigate('/projects')

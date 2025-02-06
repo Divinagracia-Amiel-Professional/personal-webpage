@@ -1,13 +1,11 @@
 import React, { CSSProperties, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { NavBarProps } from "../constants/typeIndex";
-import { Theme, ThemeContextType } from "../constants/typeIndex";
-import { ThemeContext } from "../hooks/themeProvider";
+import { multiColor, NavBarProps } from "../constants/typeIndex";
 import { Logo } from "../constants/iconsIndex";
 import CustomButtom from "./Button";
 import ThemeButton from "./ThemeButton";
 import Color from "color";
-import { useWindowDimensions } from "../hooks/hooksIndex";
+import { useWindowDimensions, useThemeContext } from "../hooks/hooksIndex";
 import CollapsableNavbarDrawer from "./Drawer";
 
 const getPhoneStyling: CSSProperties = {
@@ -15,30 +13,26 @@ const getPhoneStyling: CSSProperties = {
 }
 
 const NavBar = (props: NavBarProps) => {
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
+    const { theme, setMode } = useThemeContext()
     const navigate = useNavigate()
     const location = useLocation()
-
-
     const { height, width } = useWindowDimensions()
 
     console.log(`h: ${height} w: ${width}`)
-    const textFillLogic = !theme.isDarkMode ? theme.lightTheme.secondary : theme.darkTheme.onBackground
-    const selectedTextFillLogic = !theme.isDarkMode ? theme.lightTheme.tertiary : theme.darkTheme.secondary
-
+    
     const getTextFill = <T,>(pathName: T) => {
         if(pathName === location.pathname){
-            return selectedTextFillLogic
+            return theme.components.navBarButtons.selectedTextFill
         } else {
-            return textFillLogic
+            return theme.components.navBarButtons.textFill
         }
     }
 
     const getBGFill = <T,>(pathName: T) => {
         if(pathName === location.pathname){
-            return !theme.isDarkMode ? theme.lightTheme.secondary : theme.darkTheme.onBackground
+            return theme.components.navBarButtons.selectedBgFill
         } else {
-            return 'transparent'
+            return theme.components.navBarButtons.backgroundFill
         }
     }
 
@@ -56,7 +50,7 @@ const NavBar = (props: NavBarProps) => {
                 iconPosition="right"
                 showText={false}
                 showIcon={width > 800 ? true : false}
-                icon={<Logo scale={1.5} fill={!theme.isDarkMode ? [Color("#414066"), Color("white")] : [Color("white"), Color("#414066")]} />}
+                icon={<Logo scale={1.5} fill={theme.components.navBarButtons.iconFill} />}
                 onClick={() => {
                     navigate("/")
                 }}
@@ -73,6 +67,7 @@ const NavBar = (props: NavBarProps) => {
                         onClick={() => {
                             navigate("/about")
                         }}
+                        hoverIconColor={getTextFill('/about')}
                         textColor={getTextFill('/about')}
                         bgColor={getBGFill('/about')}
                         isTextBold={location.pathname === '/about'}
@@ -83,6 +78,7 @@ const NavBar = (props: NavBarProps) => {
                         onClick={() => {
                             navigate("/projects")
                         }}
+                        hoverIconColor={getTextFill('/projects')}
                         textColor={getTextFill('/projects')}
                         bgColor={getBGFill('/projects')}
                         isTextBold={location.pathname === '/projects'}
@@ -91,8 +87,10 @@ const NavBar = (props: NavBarProps) => {
                 <CustomButtom 
                     mode='resume'
                     text={"Resume"}
-                    borderColor={textFillLogic}
-                    textColor={textFillLogic}
+                    borderColor={theme.components.resumeButton.textFill}
+                    hoverBgColor={theme.components.resumeButton.backgroundHoverFill}
+                    hoverIconColor={theme.components.resumeButton.iconHoverFill}
+                    textColor={theme.components.resumeButton.textFill}
                     isBorderCurved={true}
                     onClick={() => {
                         window.open("https://drive.google.com/file/d/1Ps4DJcIw1zJGanGCM5z-ZMRqJYZl-8WL/view?usp=sharing", "_blank", "noopener,noreferrer");

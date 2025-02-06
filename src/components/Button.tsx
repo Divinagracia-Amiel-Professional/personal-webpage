@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react'
-import { ButtonProps } from '../constants/typeIndex'
+import React, { ReactNode, useState, useEffect, ElementType, ReactElement } from 'react'
+import { ButtonProps, SVGParams, multiColor } from '../constants/typeIndex'
+import { SvgIcon, SvgIconProps, SxProps } from '@mui/material'
 import Color from 'color'
 
 const getStyles = (mode: string | undefined): React.CSSProperties => {
@@ -75,6 +76,9 @@ const getTextStyle = (mode: string | undefined): React.CSSProperties => {
 
 interface ButtomWrapperProps extends ButtonProps {
     children: ReactNode,
+    isHovering: boolean,
+    setIsHovering: React.Dispatch<React.SetStateAction<boolean>>,
+    toggleHoverState: () => void
 }
 
 const ButtomWrapper = ({
@@ -87,9 +91,38 @@ const ButtomWrapper = ({
     borderColor = 'none',
     bgColor = 'transparent',
     textColor = Color('white'),
-    isBorderCurved = false
+    isBorderCurved = false,
+    hoverIconColor,
+    hoverBgColor,
+    isHovering,
+    setIsHovering,
+    toggleHoverState
 }: Omit<ButtomWrapperProps, 'text'>) => {
+
     const childrenPositions = (iconPosition === "right" || iconPosition === "bottom") ? children : React.Children.toArray(children).reverse()
+
+    const getBGFill = () => {
+        if(isHovering && hoverBgColor){
+            return hoverBgColor.toString()
+        }
+        else if(bgColor !== 'transparent'){
+            return bgColor.string()
+        } else {
+            return 'transparent'
+        }
+    }
+
+    const getBorderFill = () => {
+        if(borderColor){
+            if(isHovering && mode === 'resume'){
+                return 0
+            } else {
+                return borderColor !== 'none' ? `2px solid ${borderColor.string()}` : 0
+            }
+        }
+    }
+
+    const logMode = isHovering ? mode : 'none'
 
     return(
         <div 
@@ -97,14 +130,16 @@ const ButtomWrapper = ({
             style={{
                 display: showIcon || showText ? 'flex' : 'none',
                 flexDirection: (iconPosition === 'left' || iconPosition === 'right') ? 'row' : 'column' ,
-                border: borderColor !== 'none' ? `2px solid ${borderColor.string()}` : 0,
+                border: getBorderFill(),
                 borderRadius: isBorderCurved ? 15 : 0,
-                background: bgColor !== 'transparent' ? bgColor.string() : 'transparent',
+                background: getBGFill(),
                 ...getStyles(mode)
             }}
             onClick={() => {
                 onClick()
             }}
+            onMouseOver={toggleHoverState}
+            onMouseOut={toggleHoverState}
         >
             { childrenPositions }
         </div>
@@ -117,14 +152,63 @@ const CustomButtom = ({
     onClick = () => {},
     showText = true,
     showIcon = false,
-    icon = null,
+    icon,
+    iconProps = {},
     iconPosition = 'left',
     borderColor = 'none',
     bgColor = 'transparent',
     textColor = Color('white'),
     isBorderCurved = false,
     isTextBold = false,
+    hoverIconColor = undefined,
+    hoverBgColor = undefined
 }: ButtonProps) => {
+    const [ isHovering, setIsHovering ] = useState<boolean>(false)
+    let IconComponent: ReactNode = null
+
+    const toggleHoverState = () => {
+        if(hoverIconColor || hoverBgColor){
+            setIsHovering(prevState => !prevState)
+        }
+    }
+
+
+    if(icon){
+        if(React.isValidElement(icon)){
+           if ('sx' in icon.props){
+                const muiIcon = icon as ReactElement<SvgIconProps>
+                // const getHoverColor = () => {
+                //     if(muiIcon.props.sx){
+                //         return hoverIconColor && isHovering ? hoverIconColor.toString() : muiIcon.props.sx.color
+                //     }
+                // }
+
+                IconComponent = React.cloneElement(
+                    muiIcon, 
+                    {
+                        ...muiIcon.props,   
+                        sx: { 
+                            ...(muiIcon.props.sx || {}),
+                            color: hoverIconColor && isHovering ? hoverIconColor.toString() : muiIcon.props.sx?.color,
+                        },
+                        
+                    }
+                )
+           } else if ('scale' in icon.props) {
+                const customIcon = icon as ReactElement<SVGParams>
+                IconComponent = React.cloneElement(
+                    customIcon, 
+                    {
+                        ...icon.props
+                    } as SVGParams
+                )
+           }
+        } else {
+            const iconInstance = React.createElement(icon as ElementType);
+            console.log(iconInstance.props)
+        }
+        // React.cloneElement(icon, {})
+    }
 
     return(
         <ButtomWrapper
@@ -136,24 +220,33 @@ const CustomButtom = ({
             borderColor={borderColor}
             bgColor={bgColor}
             isBorderCurved={isBorderCurved}
+            hoverIconColor={hoverIconColor}
+            hoverBgColor={hoverBgColor}
+            isHovering={isHovering}
+            setIsHovering={setIsHovering}
+            toggleHoverState={toggleHoverState}
         >
             <p 
                 className='custom-button-text lexend-regular large'
                 style={{
                     display: showText ? 'block' : 'none',
-                    color: textColor.string(),
+                    color: hoverIconColor && isHovering ? hoverIconColor.toString() : textColor.string(),
                     fontWeight: isTextBold ? 700 : 400,
-                    ...getTextStyle(mode)
+                    textDecoration: isHovering && mode === 'navbar' ? 'underline' : 'none',
+                    ...getTextStyle(mode),
                 }}
             >
                 {text}
             </p>
             <div
                 style={{
-                    display: showIcon ? 'flex' : 'none' 
+                    display: showIcon ? 'flex' : 'none', 
                 }}
             >
-                { icon ? icon : null }
+                {/* { icon ? icon : null } */}
+                {
+                    IconComponent
+                }
             </div>
         </ButtomWrapper>
     )

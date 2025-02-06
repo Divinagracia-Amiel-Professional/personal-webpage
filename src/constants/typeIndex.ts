@@ -1,5 +1,7 @@
 import Color from "color"
-import { ReactNode, SetStateAction, Dispatch, ReactElement, KeyboardEvent, MouseEvent } from "react"
+import { ReactNode, SetStateAction, Dispatch, ReactElement, ElementType, KeyboardEvent, MouseEvent } from "react"
+import { SvgIconComponent } from "@mui/icons-material"
+import { SvgIconProps } from "@mui/material"
 // Pages Component Props
 
 type HomeProps = {
@@ -26,16 +28,18 @@ type PageWrapperProps = {
 }
 
 // type DrawerToggleHandler = (event: React.KeyboardEvent | React.MouseEvent) => void;
-
-type ButtonProps = {
+interface ButtonProps {
     text: string,
     textColor?: Color,
     isTextBold?: boolean,
     bgColor?: Color | 'transparent',
     borderColor?: Color | 'none',
+    hoverIconColor?: Color | undefined,
+    hoverBgColor?: Color | undefined,
     isBorderCurved?: boolean,
     mode?: "navbar" | "transparent-bordered" | "solid" | "icon-only" | "resume" | "icon-with-BG",
-    icon?: ReactElement | null,
+    icon?: ElementType | ReactElement<SVGParams> | ReactElement<SvgIconProps> | null,
+    iconProps?: SVGParams,
     iconPosition?: "top" | "bottom" | "left" | "right",
     showIcon?: boolean,
     showText?: boolean,
@@ -59,7 +63,7 @@ type SVGParams = {
     width?: number, // width of svg by px
     strokeWidth?: number, // thickness of stroke if it exists on svg
     strokeColor?: Color, // color of stroke if it exists on svg
-    fill?: multiColor, // Color array of fill by primary to accent colors
+    fill?: multiColor | Color, // Color array of fill by primary to accent colors
     invert?: boolean, // invert color array
 }
 
@@ -67,13 +71,53 @@ type SVGConstants = {
     colorLength: number // Number of fills the svg have
     height: number, // default height and width of viewbox for auto scaling
     width: number,
-}
+} 
 
 // Hooks
 
 type WindowDimensions = {
     height: number,
     width: number
+}
+
+// Theme Types
+
+type ComponentTheme = {
+    textFill: Color,
+    backgroundFill: Color,
+    iconFill: Color | multiColor | undefined,
+    iconHoverFill: Color | undefined
+}
+
+interface NavBarButtonTheme extends Omit<ComponentTheme, "iconHoverFill"> {
+    selectedTextFill: Color,
+    selectedBgFill: Color,
+}
+
+interface ButtonTheme extends ComponentTheme {
+    backgroundHoverFill: Color
+}
+
+interface ContentTextTheme extends Pick<ComponentTheme, "textFill"> {
+    emphasizedFill: Color,
+}
+
+type PageWrapperTheme = {
+    headerTextFill: Color,
+    footerTextFill: Color,
+    footerBgFill: Color,
+}
+
+interface ThemeExtension extends Theme{
+    components: {
+        contentText: ContentTextTheme,
+        button: ButtonTheme,
+        resumeButton: ButtonTheme,
+        navBarButtons: NavBarButtonTheme,
+        contactButtons: ComponentTheme,
+        themeButton: Pick<ComponentTheme, "iconFill">
+        pageWrapper: PageWrapperTheme
+    }
 }
 
 type ThemeColors = {
@@ -96,9 +140,9 @@ type Theme = {
     darkTheme: ThemeColors
 }
 
-type ThemeContextType = {
-    theme: Theme,
-    setMode: Dispatch<SetStateAction<Theme>>
+type ThemeContextType<T extends Theme | ThemeExtension = Theme> = {
+    theme: T,
+    setMode: Dispatch<SetStateAction<T>>
 }
 
 type ThemeProviderProps = {
@@ -124,5 +168,6 @@ export type {
     Theme,
     ThemeContextType,
     ThemeProviderProps,
+    ThemeExtension,
     WindowDimensions
 }

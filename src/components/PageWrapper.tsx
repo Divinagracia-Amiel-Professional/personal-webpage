@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useContext } from 'react'
 import { Theme, ThemeContextType, ThemeProviderProps, PageWrapperProps } from '../constants/typeIndex'
 import { ThemeContext } from '../hooks/themeProvider'
+import { useThemeContext } from '../hooks/hooksIndex'
 import NavBar from './NavBar'
 import Contacts from './Contacts'
 import Color from 'color'
@@ -10,7 +11,7 @@ type FooterProps = {
 }
 
 const Header = ({ title }: Omit<PageWrapperProps, 'children'>) => {
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
+    const { theme, setMode } = useThemeContext()
 
     return(
         <div
@@ -22,7 +23,7 @@ const Header = ({ title }: Omit<PageWrapperProps, 'children'>) => {
             <p 
                 className="xx-large lexend-bold"
                 style={{
-                    color: !theme.isDarkMode ? theme.lightTheme.accent1.string() : theme.darkTheme.primary.string()
+                    color: theme.components.pageWrapper.headerTextFill.toString()
                 }}
             >
                 { title }
@@ -32,22 +33,19 @@ const Header = ({ title }: Omit<PageWrapperProps, 'children'>) => {
 } 
 
 const Footer = (props: FooterProps) => {
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
+    const { theme, setMode } = useThemeContext()
 
-    const textFill = !theme.isDarkMode ? theme.lightTheme.background.string() : theme.darkTheme.tertiary.string()
-    const buttonFill = !theme.isDarkMode ? theme.lightTheme.primary.string() : theme.darkTheme.onBackground.string()
-    
     return(
         <div
             className='footer-block'
             style={{
-                backgroundColor: buttonFill
+                backgroundColor: theme.components.pageWrapper.footerBgFill.toString()
             }}
         >
             <p
                 className='small roboto-mono-light'  
                 style={{
-                    color: textFill
+                    color: theme.components.pageWrapper.footerTextFill.toString()
                 }}
             >&copy; 2024 Amiel Divinagracia</p>
         </div>

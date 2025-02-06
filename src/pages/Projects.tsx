@@ -1,8 +1,7 @@
 import React, { CSSProperties, ReactElement, useContext, useState, useEffect, useMemo } from "react";
 import { ProjectProps } from "../constants/typeIndex";
 import { PageWrapper, CustomButtom} from "../components/componentIndex";
-import { ThemeContext } from "../hooks/themeProvider";
-import { ThemeContextType } from "../constants/typeIndex";
+import { useThemeContext } from "../hooks/hooksIndex";
 import { ChevronRightRounded, ChevronLeftRounded } from "../constants/iconsIndex";
 import { SxProps } from "@mui/material";
 import { Modal } from "@mui/material";
@@ -27,8 +26,6 @@ import {
 } from "../constants/imageIndex";
 import Color from "color";
 
-type EventVoidFunc = (e: EventObject) => void
-
 type ProjectBlockProps = {
     index: number,
     title: string,
@@ -37,13 +34,6 @@ type ProjectBlockProps = {
     imgUrls: string[],
     link?: string,
 }
-
-// type InitSetters = [ React.Dispatch<React.SetStateAction<number>>, React.Dispatch<React.SetStateAction<boolean>> ]
-
-// type InitThumbItemsType = {
-//     items: string[],
-//     setters: InitSetters
-// }
 
 interface SliderModalProps extends Pick<ProjectBlockProps, 'imgUrls'>{
     open: boolean,
@@ -105,98 +95,19 @@ const initItems = (
     })
 } // setter for main items
 
-type ThumbItemType = {
-    items: string[],
-    getThumbIndex: () => number,
-    setThumbIndex: React.Dispatch<React.SetStateAction<number>>,
-    setThumbAnim: React.Dispatch<React.SetStateAction<boolean>>
-    thumbIndex: number
-}
-
-interface ThumbItemComponentProps extends Omit<ThumbItemType, 'items'> {
-    index: number,
-    imgRef: string
-}
-
-const ThumbItemComponent = ({
-    getThumbIndex,
-    setThumbAnim,
-    setThumbIndex,
-    index,
-    imgRef,
-    thumbIndex
-}: ThumbItemComponentProps) => {
-    const thisItemIndex = index;
-
-    console.log(`thumbIndex: ${thumbIndex}`)
-    
-    return(
-        <div
-            className="projects-img-container-thumb"
-            style={{
-                border: thisItemIndex === getThumbIndex() ? '2px solid white' : 0
-            }}
-            onClick={() => (
-                setThumbIndex(index),
-                setThumbAnim(true)
-            )}
-        >
-            <img src={imgRef} alt={imgRef} />
-        </div>
-    )
-}
-
-const initThumbItems = ({items, getThumbIndex, setThumbIndex, setThumbAnim, thumbIndex}: ThumbItemType) => {
-    const carouselArray = items.map((imgRef, index) => {
-        return(
-            <ThumbItemComponent 
-                index={index}
-                imgRef={imgRef}
-                getThumbIndex={getThumbIndex}
-                setThumbIndex={setThumbIndex}
-                setThumbAnim={setThumbAnim}
-                thumbIndex={thumbIndex}
-            />
-        )
-    })
-
-    return carouselArray
-} // setter for thumbnail arr of react components
-
-
 const SliderModal = ({
     open,
     setToggle,
     imgUrls
 }: SliderModalProps) => {
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
+    const { theme, setMode } = useThemeContext()
     const [ mainIndex, setMainIndex ] = useState<number>(0)
     const [ mainAnim, setMainAnim ] = useState<boolean>(false)
     const [ thumbIndex, setThumbIndex ] = useState<number>(0)
     const [ thumbAnim, setThumbAnim ] = useState<boolean>(false)
 
-    const getThumbIndex = () => { //get thumb index inside item
-        return thumbIndex
-    }
-
-    const items = initItems(imgUrls)
-    // const initThumbs = initThumbItems({
-    //     thumbIndex: thumbIndex,
-    //     items: imgUrls,
-    //     getThumbIndex: getThumbIndex, 
-    //     setThumbIndex: setThumbIndex, 
-    //     setThumbAnim: setThumbAnim
-    // })
-
-    const initThumbs = initThumbItems({
-        thumbIndex, 
-        items: imgUrls,
-        getThumbIndex,
-        setThumbIndex,
-        setThumbAnim
-    })
+    const items = initItems(imgUrls)                                                                
   
-    const [ thumbs, setThumbs ] = useState<ReactElement[]>(initThumbs)
     const [ mainItems ] = useState<ReactElement[]>(items)
 
     const textFill = !theme.isDarkMode ? theme.lightTheme.secondary.string() : theme.darkTheme.onBackground.string()
@@ -204,15 +115,6 @@ const SliderModal = ({
     const buttonTextFill = !theme.isDarkMode ? theme.lightTheme.background.string() : theme.darkTheme.secondary.string()
     const buttonFill = !theme.isDarkMode ? theme.lightTheme.primary.string() : theme.darkTheme.primary.string()
 
-    // useEffect(() => {
-    //     setThumbs(initThumbItems({
-    //         thumbIndex, 
-    //         items: imgUrls,
-    //         getThumbIndex,
-    //         setThumbIndex,
-    //         setThumbAnim
-    //     }));
-    // }, [thumbIndex, imgUrls]);
 
     const slideNext = () => {
         if(mainIndex < items.length - 1){
@@ -231,100 +133,18 @@ const SliderModal = ({
         setMainIndex(e.item)
     }
 
-    // const slideNext = () => {
-    //     if(!thumbAnim && thumbIndex < thumbs.length - 1){
-    //         setThumbAnim(true)
-    //         setThumbIndex(prevState => prevState + 1)
-    //     }
-    // }
-
-    // const slidePrev = () => {
-    //     if(!thumbAnim && thumbIndex > 0){
-    //         setThumbAnim(true)
-    //         setThumbIndex(prevState => prevState - 1)
-    //     }
-    // }
-
-    // const syncMainBeforeChange = (e: EventObject) => {
-    //     setMainAnim(true)
-    // }
-
-    // const syncMainAfterChange = (e: EventObject) => {
-        
-    //     setMainAnim(false)
-
-    //     if(e.type === 'action'){
-    //         setThumbIndex(e.item)
-    //         setThumbAnim(false)
-    //     } else {
-    //         setMainIndex(thumbIndex)
-    //     }
-    // }
-
-    // const syncThumbs = (e: EventObject) => {
-    //     console.log(e)
-    //     setThumbIndex(e.item)
-    //     setThumbAnim(false)
-
-    //     if (!mainAnim) {
-    //         setMainIndex(e.item)
-    //     }
-    // }
-
-    const IconButtonStyle: SxProps = {
-        color: buttonTextFill,
-        "&:hover": { color: iconHoverFill }
-    }
-
-    const ButtonBGStyle: CSSProperties = {
-        background: buttonFill
-    }
-
-    const renderPrevButton = ({ isDisabled }: { isDisabled?: boolean | undefined}) => {
-        return (
-            <div
-                className="cursor-pointer"
-                // style={ButtonBGStyle}
-            >
-                <ChevronLeftRounded 
-                    sx={IconButtonStyle}
-                />
-            </div>
-        );
-    };
-    
-    const renderNextButton = ({ isDisabled }: { isDisabled?: boolean | undefined}) => {
-        return (
-            <CustomButtom 
-                mode='icon-with-BG'
-                text='text'
-                iconPosition="right"
-                showText={false}
-                showIcon={true}
-                bgColor={Color('red')}
-                icon={
-                    <ChevronRightRounded 
-                        sx={IconButtonStyle}
-                    />
-                }
-                onClick={() => {
-                    // navigate("/")
-                }}
-            />
-        );
-    };
-
-    // <div
-    //     className="cursor-pointer"
-    //     // style={ButtonBGStyle}
-
-    // >
-    //     <ChevronRightRounded 
-    //         sx={IconButtonStyle}
-    //     />
-    // </div>
-
     console.log(mainIndex)
+    
+    const sliderButtonsProps = [
+        {
+            icon: <ChevronLeftRounded sx={{ color: theme.components.button.iconFill?.toString() }} />,
+            onClick: () => slidePrev() 
+        },
+        {
+            icon: <ChevronRightRounded sx={{ color: theme.components.button.iconFill?.toString() }} />,
+            onClick: () => slideNext()
+        }
+    ]
     
     return(
         <Modal
@@ -357,8 +177,6 @@ const SliderModal = ({
 
                     // responsive={responsive}   
                     controlsStrategy="alternate"
-                    renderNextButton={renderNextButton}
-                    renderPrevButton={renderPrevButton}
                     onSlideChanged={handleSetMainIndex}
                     disableButtonsControls
                     syncStateOnPropsUpdate={true}
@@ -375,94 +193,24 @@ const SliderModal = ({
                         // alignSelf: 'stretch',
                     }}
                 >
-                    <CustomButtom 
-                        mode='icon-with-BG'
-                        text='text'
-                        iconPosition="right"
-                        showText={false}
-                        showIcon={true}
-                        bgColor={Color(buttonFill)}
-                        isBorderCurved={true}
-                        icon={
-                            <ChevronLeftRounded 
-                                sx={IconButtonStyle}
+                    {
+                        sliderButtonsProps.map(button => (
+                            <CustomButtom
+                                mode='icon-with-BG'
+                                text='text'
+                                iconPosition="right"
+                                showText={false}
+                                showIcon={true}
+                                bgColor={theme.components.button.backgroundFill}
+                                hoverIconColor={theme.components.button.iconHoverFill}
+                                hoverBgColor={theme.components.button.backgroundHoverFill}
+                                isBorderCurved={true}
+                                icon={button.icon}
+                                onClick={button.onClick}
                             />
-                        }
-                        onClick={() => {
-                            slidePrev()
-                        }}
-                    />
-                    <CustomButtom 
-                        mode='icon-with-BG'
-                        text='text'
-                        iconPosition="right"
-                        showText={false}
-                        showIcon={true}
-                        bgColor={Color(buttonFill)}
-                        isBorderCurved={true}
-                        icon={
-                            <ChevronRightRounded 
-                                sx={IconButtonStyle}
-                            />
-                        }
-                        onClick={() => {
-                            slideNext()
-                        }}
-                    />
+                        ))
+                    }
                 </div>
-                {/* <AliceCarousel
-                    activeIndex={mainIndex}
-                    animationType="fadeout"
-                    animationDuration={400}
-                    disableDotsControls
-                    disableButtonsControls
-                    items={mainItems}
-                    mouseTracking={!thumbAnim}
-                    onSlideChange={syncMainBeforeChange}
-                    onSlideChanged={syncMainAfterChange}
-                    touchTracking={!thumbAnim}
-                />
-                <div
-                    className="thumbs"
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        // maxWidth: '30vw',
-                        alignItems: 'center',
-                        alignSelf: 'stretch',
-                        // justifyContent: 'space-between'
-                    }}
-                >
-                    <div 
-                        style={{
-                            cursor: 'pointer',
-                            padding: 20
-                        }}
-                        className="btn-prev" onClick={slidePrev}
-                    >
-                            &lang;
-                    </div>
-                    <AliceCarousel
-                        activeIndex={thumbIndex}
-                        autoWidth
-                        disableButtonsControls
-                        disableDotsControls
-                        items={thumbs}
-                        mouseTracking={false}
-                        onSlideChanged={syncThumbs}
-                        touchTracking={!mainAnim}
-                    />
-                    <div
-                        style={{
-                            cursor: 'pointer',
-                            padding: 20
-                        }} 
-                        className="btn-next" 
-                        onClick={slideNext}
-                    >
-                            &rang;
-                    </div>
-                </div>  */}
             </div>   
         </Modal>
     )
@@ -476,15 +224,12 @@ const ProjectBlock = ({
     logoUrl,
     link
 }: ProjectBlockProps) => {
+    const { theme, setMode } = useThemeContext()
     const [ open, setOpen ] = useState<boolean>(false) 
     const setToggle = () => {
         setOpen(prevState => !prevState)
     }
-
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
-    const textFill = !theme.isDarkMode ? theme.lightTheme.secondary.string() : theme.darkTheme.onBackground.string()
-    const buttonTextFill = !theme.isDarkMode ? theme.lightTheme.background : theme.darkTheme.secondary
-    const buttonFill = !theme.isDarkMode ? theme.lightTheme.primary : theme.darkTheme.primary
+    
     const hasManyImages = imgUrls?.length > 2
 
     return(
@@ -503,13 +248,13 @@ const ProjectBlock = ({
                 <p
                     className="project-details-title x-large lexend-bold"
                     style={{
-                        color: textFill
+                        color: theme.components.contentText.textFill.toString()
                     }}
                 > {title} </p>
-                <hr style={{width: '50%', height: 1, background: textFill, border: 0}} />
+                <hr style={{width: '50%', height: 1, background: theme.components.contentText.textFill.toString(), border: 0}} />
                 <p
                     style={{
-                        color: textFill,
+                        color: theme.components.contentText.textFill.toString(),
                         marginBottom: 20
                     }} className="project-details-body regSize roboto-mono-regular"
                 > {details}</p>
@@ -520,9 +265,11 @@ const ProjectBlock = ({
                     showIcon={true}
                     iconPosition="right"
                     // borderColor={textFillLogic}
-                    bgColor={buttonFill}
-                    textColor={buttonTextFill}
-                    icon={<ChevronRightRounded sx={{color: buttonTextFill.string()}} />}
+                    bgColor={theme.components.button.backgroundFill}
+                    textColor={theme.components.button.textFill}
+                    hoverIconColor={theme.components.button.iconHoverFill}
+                    hoverBgColor={theme.components.button.backgroundHoverFill}
+                    icon={<ChevronRightRounded sx={{color: theme.components.button.textFill.string()}} />}
                     isBorderCurved={true}
                     onClick={() => {
                         window.open(link, "_blank", "noopener,noreferrer");
@@ -559,8 +306,8 @@ const ProjectBlock = ({
                                 }
                             }}
                         >
-                            <p className="regSize roboto-mono-regular" style={{color: textFill}}>{`${imgUrls.length - 2}+ more`}</p>
-                            <ChevronRightRounded sx={{color: textFill}}/>
+                            <p className="regSize roboto-mono-regular" style={{color: theme.components.contentText.textFill.toString()}}>{`${imgUrls.length - 2}+ more`}</p>
+                            <ChevronRightRounded sx={{color: theme.components.contentText.textFill.toString()}}/>
                         </div> 
                     : null
                 }
@@ -575,7 +322,6 @@ const ProjectBlock = ({
 }
 
 const Projects = (props: ProjectProps) => {
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
 
     return (
         <PageWrapper

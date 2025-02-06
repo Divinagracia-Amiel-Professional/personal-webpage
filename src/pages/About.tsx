@@ -1,10 +1,9 @@
 import React, { useContext, Fragment } from "react";
 import { AboutProps } from "../constants/typeIndex";
 import { PageWrapper } from "../components/componentIndex";
-import { ThemeContextType } from "../constants/typeIndex";
-import { ThemeContext } from "../hooks/themeProvider";
 import { Header } from "../components/PageWrapper";
 import { GradPic, DKLogo, AheadLogo } from "../constants/imageIndex";
+import { useThemeContext } from "../hooks/hooksIndex";
 
 type AboutBlockProps = 
 | {
@@ -83,16 +82,15 @@ const AboutBlock = ({
     toolsUsed,
     details
 }: AboutBlockProps) => {
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
+    const { theme, setMode } = useThemeContext()
 
-    const normalTextFill = !theme.isDarkMode ? theme.lightTheme.secondary.string() : theme.darkTheme.onBackground.string() 
     const emphasizedFill = !theme.isDarkMode ? theme.lightTheme.accent1.string() : theme.darkTheme.primary.string()
     
     const detailsBlock: JSX.Element = mode === 'single-text' ? (
         <>
             <p
                 className="regSize roboto-mono-regular"
-                style={{ color: normalTextFill }}
+                style={{ color: theme.components.contentText.textFill.toString() }}
             >
                 {
                     details.split('\n').map((line, index) => (
@@ -106,14 +104,14 @@ const AboutBlock = ({
         </>
     ) : (
         <>
-            <p className="regSize roboto-mono-regular" style={{color: normalTextFill}}>Role: {role}</p>
+            <p className="regSize roboto-mono-regular" style={{color: theme.components.contentText.textFill.toString()}}>Role: {role}</p>
             <div className="list-block">
-                <p className="regSize roboto-mono-regular" style={{color: normalTextFill}}>Accomplishments: </p>
+                <p className="regSize roboto-mono-regular" style={{color: theme.components.contentText.textFill.toString()}}>Accomplishments: </p>
                 <ul>
                     {
                         accomplishments ? accomplishments.map((item, index) => {
                             return(
-                                <li key={index} className="regSize roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
+                                <li key={index} className="regSize roboto-mono-regular" style={{color: theme.components.contentText.textFill.toString()}}>{item}</li>
                             )
                         }) :
                         null
@@ -121,12 +119,12 @@ const AboutBlock = ({
                 </ul>
             </div>
             <div className="list-block">
-                <p className="regSize roboto-mono-regular" style={{color:normalTextFill}}>Tools Used: </p>
+                <p className="regSize roboto-mono-regular" style={{color:theme.components.contentText.textFill.toString()}}>Tools Used: </p>
                 <ul>
                     {
                         toolsUsed ? toolsUsed.map((item, index) => {
                             return(
-                                <li key={index} className="regSize roboto-mono-regular" style={{color: normalTextFill}}>{item}</li>
+                                <li key={index} className="regSize roboto-mono-regular" style={{color: theme.components.contentText.textFill.toString()}}>{item}</li>
                             )
                         }) :
                         null
@@ -151,7 +149,7 @@ const AboutBlock = ({
                 <p
                     className="about-details-title lexend-bold x-large"
                     style={{
-                        color: emphasizedFill
+                        color: theme.components.contentText.emphasizedFill.toString()
                     }}
                 >
                     {title}
@@ -163,7 +161,6 @@ const AboutBlock = ({
 }
 
 const About = (props: AboutProps) => {
-    const { theme, setMode } = useContext(ThemeContext) as ThemeContextType
 
     return(
         <PageWrapper
