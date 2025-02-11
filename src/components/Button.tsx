@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect, ElementType, ReactElement } from 'react'
+import React, { ReactNode, useState, useEffect, ElementType, ReactElement, useRef } from 'react'
 import { ButtonProps, SVGParams, multiColor } from '../constants/typeIndex'
 import { SvgIcon, SvgIconProps, SxProps } from '@mui/material'
 import Color from 'color'
@@ -22,6 +22,11 @@ const getStyles = (mode: string | undefined): React.CSSProperties => {
         case 'icon-only':
             return ({
                 padding: 10
+            })
+        case 'text-only':
+            ({
+                padding: 0,
+                margin: 0
             })
         case 'resume':
             return({
@@ -69,17 +74,39 @@ const getTextStyle = (mode: string | undefined): React.CSSProperties => {
         }
         default:
             return ({
-                
+                fontWeight: 400
             })
     }
 }
 
 interface ButtomWrapperProps extends ButtonProps {
     children: ReactNode,
-    isHovering: boolean,
-    setIsHovering: React.Dispatch<React.SetStateAction<boolean>>,
-    toggleHoverState: () => void
+    divRef: React.RefObject<HTMLDivElement>
+    isInside: boolean,
 }
+
+const useIsPointerInside = () => {
+    const divRef = useRef<HTMLDivElement>(null);
+    const [isInside, setIsInside] = useState(false);
+
+    useEffect(() => {
+        const checkPointer = (event: MouseEvent) => {
+            if (!divRef.current) return;
+            const rect = divRef.current.getBoundingClientRect();
+            const inside =
+                event.clientX >= rect.left &&
+                event.clientX <= rect.right &&
+                event.clientY >= rect.top &&
+                event.clientY <= rect.bottom;
+            setIsInside(inside);
+        };
+
+        document.addEventListener("mousemove", checkPointer);
+        return () => document.removeEventListener("mousemove", checkPointer);
+    }, []);
+
+    return { divRef, isInside };
+};
 
 const ButtomWrapper = ({
     children, 
@@ -94,15 +121,15 @@ const ButtomWrapper = ({
     isBorderCurved = false,
     hoverIconColor,
     hoverBgColor,
-    isHovering,
-    setIsHovering,
-    toggleHoverState
+    isInside,
+    divRef
 }: Omit<ButtomWrapperProps, 'text'>) => {
-
     const childrenPositions = (iconPosition === "right" || iconPosition === "bottom") ? children : React.Children.toArray(children).reverse()
 
+    console.log(isInside)
+
     const getBGFill = () => {
-        if(isHovering && hoverBgColor){
+        if(isInside && hoverBgColor){
             return hoverBgColor.toString()
         }
         else if(bgColor !== 'transparent'){
@@ -114,7 +141,7 @@ const ButtomWrapper = ({
 
     const getBorderFill = () => {
         if(borderColor){
-            if(isHovering && mode === 'resume'){
+            if(isInside && mode === 'resume'){
                 return 0
             } else {
                 return borderColor !== 'none' ? `2px solid ${borderColor.string()}` : 0
@@ -122,10 +149,9 @@ const ButtomWrapper = ({
         }
     }
 
-    const logMode = isHovering ? mode : 'none'
-
     return(
         <div 
+            ref={divRef}
             className='custom-button'
             style={{
                 display: showIcon || showText ? 'flex' : 'none',
@@ -138,8 +164,6 @@ const ButtomWrapper = ({
             onClick={() => {
                 onClick()
             }}
-            onMouseOver={toggleHoverState}
-            onMouseOut={toggleHoverState}
         >
             { childrenPositions }
         </div>
@@ -161,9 +185,10 @@ const CustomButtom = ({
     isBorderCurved = false,
     isTextBold = false,
     hoverIconColor = undefined,
-    hoverBgColor = undefined
+    hoverBgColor = undefined,
 }: ButtonProps) => {
     const [ isHovering, setIsHovering ] = useState<boolean>(false)
+    const { divRef, isInside } = useIsPointerInside()
     let IconComponent: ReactNode = null
 
     const toggleHoverState = () => {
@@ -177,19 +202,13 @@ const CustomButtom = ({
         if(React.isValidElement(icon)){
            if ('sx' in icon.props){
                 const muiIcon = icon as ReactElement<SvgIconProps>
-                // const getHoverColor = () => {
-                //     if(muiIcon.props.sx){
-                //         return hoverIconColor && isHovering ? hoverIconColor.toString() : muiIcon.props.sx.color
-                //     }
-                // }
-
                 IconComponent = React.cloneElement(
                     muiIcon, 
                     {
                         ...muiIcon.props,   
                         sx: { 
                             ...(muiIcon.props.sx || {}),
-                            color: hoverIconColor && isHovering ? hoverIconColor.toString() : muiIcon.props.sx?.color,
+                            color: hoverIconColor && isInside ? hoverIconColor.toString() : muiIcon.props.sx?.color,
                         },
                         
                     }
@@ -199,7 +218,9 @@ const CustomButtom = ({
                 IconComponent = React.cloneElement(
                     customIcon, 
                     {
-                        ...icon.props
+                        ...icon.props,
+                        
+                        fill: hoverIconColor && isInside ? hoverIconColor : icon.props.fill
                     } as SVGParams
                 )
            }
@@ -222,17 +243,16 @@ const CustomButtom = ({
             isBorderCurved={isBorderCurved}
             hoverIconColor={hoverIconColor}
             hoverBgColor={hoverBgColor}
-            isHovering={isHovering}
-            setIsHovering={setIsHovering}
-            toggleHoverState={toggleHoverState}
+            divRef={divRef}
+            isInside={isInside}
         >
             <p 
-                className='custom-button-text lexend-regular large'
+                className={`${mode === 'text-only' ? 'roboto-mono-regular regSize' : 'lexend-regular large'}`}
                 style={{
                     display: showText ? 'block' : 'none',
-                    color: hoverIconColor && isHovering ? hoverIconColor.toString() : textColor.string(),
+                    color: hoverIconColor && isInside ? hoverIconColor.toString() : textColor.string(),
                     fontWeight: isTextBold ? 700 : 400,
-                    textDecoration: isHovering && mode === 'navbar' ? 'underline' : 'none',
+                    textDecoration: isInside && (mode === 'navbar' || mode === 'text-only') ? 'underline' : 'none',
                     ...getTextStyle(mode),
                 }}
             >

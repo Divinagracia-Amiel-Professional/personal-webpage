@@ -38,7 +38,7 @@ const Contacts = (props: ContactsProps) => {
         {
             text: 'Phone',
             icon: <PhoneIcon sx={{ color: theme.components.contactButtons.iconFill?.toString(), fontSize: 35 }} />,
-            link: '09063976957'
+            link: '+639063976957'
         },
         {
             text: 'Email',

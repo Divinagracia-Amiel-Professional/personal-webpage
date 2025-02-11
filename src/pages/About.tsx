@@ -83,8 +83,6 @@ const AboutBlock = ({
     details
 }: AboutBlockProps) => {
     const { theme, setMode } = useThemeContext()
-
-    const emphasizedFill = !theme.isDarkMode ? theme.lightTheme.accent1.string() : theme.darkTheme.primary.string()
     
     const detailsBlock: JSX.Element = mode === 'single-text' ? (
         <>

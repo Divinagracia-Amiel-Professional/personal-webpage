@@ -67,7 +67,8 @@ const extendTheme = (theme: Theme): ThemeExtension => {
                 iconHoverFill: !theme.isDarkMode ? theme.lightTheme.tertiary : theme.darkTheme.secondary,
             },
             themeButton: {
-                iconFill: !theme.isDarkMode ?  [theme.lightTheme.secondary, theme.lightTheme.tertiary] : [theme.lightTheme.tertiary, theme.lightTheme.primary],
+                iconFill: !theme.isDarkMode ?  [theme.lightTheme.secondary, theme.lightTheme.tertiary] : [theme.darkTheme.onBackground, theme.darkTheme.secondary],
+                iconHoverFill: !theme.isDarkMode ?  [theme.lightTheme.background, theme.lightTheme.primary] : [theme.darkTheme.tertiary, theme.darkTheme.primary],
             }
         }
     })

@@ -34,10 +34,10 @@ interface ButtonProps {
     isTextBold?: boolean,
     bgColor?: Color | 'transparent',
     borderColor?: Color | 'none',
-    hoverIconColor?: Color | undefined,
+    hoverIconColor?: Color | multiColor | undefined,
     hoverBgColor?: Color | undefined,
     isBorderCurved?: boolean,
-    mode?: "navbar" | "transparent-bordered" | "solid" | "icon-only" | "resume" | "icon-with-BG",
+    mode?: "navbar" | "transparent-bordered" | "solid" | "icon-only" | "resume" | "icon-with-BG" | "text-only",
     icon?: ElementType | ReactElement<SVGParams> | ReactElement<SvgIconProps> | null,
     iconProps?: SVGParams,
     iconPosition?: "top" | "bottom" | "left" | "right",
@@ -86,7 +86,7 @@ type ComponentTheme = {
     textFill: Color,
     backgroundFill: Color,
     iconFill: Color | multiColor | undefined,
-    iconHoverFill: Color | undefined
+    iconHoverFill: Color | multiColor | undefined
 }
 
 interface NavBarButtonTheme extends Omit<ComponentTheme, "iconHoverFill"> {
@@ -115,7 +115,7 @@ interface ThemeExtension extends Theme{
         resumeButton: ButtonTheme,
         navBarButtons: NavBarButtonTheme,
         contactButtons: ComponentTheme,
-        themeButton: Pick<ComponentTheme, "iconFill">
+        themeButton: Pick<ComponentTheme, "iconFill" | "iconHoverFill">
         pageWrapper: PageWrapperTheme
     }
 }

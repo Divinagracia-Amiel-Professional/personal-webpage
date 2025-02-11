@@ -27,6 +27,7 @@ const ThemeButton = () => {
             showText={false}
             showIcon={true}
             icon={icon}
+            hoverIconColor={theme.components.themeButton.iconHoverFill}
             iconProps={{}}
             onClick={() => {
                 onClickHandler()

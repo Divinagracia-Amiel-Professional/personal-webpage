@@ -110,12 +110,6 @@ const SliderModal = ({
   
     const [ mainItems ] = useState<ReactElement[]>(items)
 
-    const textFill = !theme.isDarkMode ? theme.lightTheme.secondary.string() : theme.darkTheme.onBackground.string()
-    const iconHoverFill = !theme.isDarkMode ? theme.lightTheme.tertiary.string() : theme.darkTheme.tertiary.string()
-    const buttonTextFill = !theme.isDarkMode ? theme.lightTheme.background.string() : theme.darkTheme.secondary.string()
-    const buttonFill = !theme.isDarkMode ? theme.lightTheme.primary.string() : theme.darkTheme.primary.string()
-
-
     const slideNext = () => {
         if(mainIndex < items.length - 1){
             setMainIndex(prevState => (prevState + 1))
@@ -294,22 +288,25 @@ const ProjectBlock = ({
                 }
                 {
                     hasManyImages ? 
-                        <div
-                            className="cursor-pointer"
-                            style={{
-                                display: "flex",
-                                flexDirection: "row"
-                            }}
+                        <CustomButtom 
+                            mode='text-only'
+                            text={`${imgUrls.length - 2}+ more`}
+                            isTextBold={true}
+                            showIcon={true}
+                            iconPosition="right"
+                            // borderColor={textFillLogic}
+                            bgColor={Color('rgb(0,0,0,0)')}
+                            textColor={theme.components.contentText.textFill}
+                            hoverIconColor={theme.components.contentText.emphasizedFill}
+                            icon={<ChevronRightRounded sx={{color: theme.components.contentText.textFill.toString()}} />}
+                            isBorderCurved={true}
                             onClick={() => {
                                 if(hasManyImages){
-                                    setToggle()
-                                }
+                                setToggle()
+                            }
                             }}
-                        >
-                            <p className="regSize roboto-mono-regular" style={{color: theme.components.contentText.textFill.toString()}}>{`${imgUrls.length - 2}+ more`}</p>
-                            <ChevronRightRounded sx={{color: theme.components.contentText.textFill.toString()}}/>
-                        </div> 
-                    : null
+                        />
+                        : null
                 }
             </div>
             <SliderModal 
