@@ -3,7 +3,7 @@ import { AboutProps } from "../constants/typeIndex";
 import { PageWrapper } from "../components/componentIndex";
 import { Header } from "../components/PageWrapper";
 import { GradPic, DKLogo, AheadLogo } from "../constants/imageIndex";
-import { useThemeContext } from "../hooks/hooksIndex";
+import { useThemeContext, useWindowDimensions } from "../hooks/hooksIndex";
 
 type AboutBlockProps = 
 | {
@@ -83,6 +83,7 @@ const AboutBlock = ({
     details
 }: AboutBlockProps) => {
     const { theme, setMode } = useThemeContext()
+    const { width, height } = useWindowDimensions()
     
     const detailsBlock: JSX.Element = mode === 'single-text' ? (
         <>
@@ -135,9 +136,15 @@ const AboutBlock = ({
     return(
         <div
             className="about-block"
+            style={{
+                flexDirection: width < 850 ? 'column' : 'row',
+                alignItems: width < 850 ? 'center' : 'flex-start',
+            }}
         >
             <div
                 className="about-img-container"
+                style={{
+                }}
             >
                 <img src={imgRef} alt={imgRef} />
             </div>

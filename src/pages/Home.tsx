@@ -27,16 +27,16 @@ const Home = (props: HomeProps) => {
                     className="home-intro-text"
                 >
                     <p
-                        className="x-large roboto-mono-regular"
+                        className={`x-large roboto-mono-regular`}
                         style={{ color: theme.components.contentText.textFill.toString() }}
                     >
-                        Hello World, I'm <br/><span style={{color: theme.components.contentText.emphasizedFill.toString()}} className="xxx-large roboto-mono-bold">Amiel Divinagracia</span>.
+                        Hello World, I'm <br/><span style={{color: theme.components.contentText.emphasizedFill.toString()}} className={`xxx-large roboto-mono-bold`}>Amiel Divinagracia</span>.
                     </p>
                     <p
-                        className="x-large roboto-mono-regular"
+                        className={`x-large roboto-mono-regular`}
                         style={{ color: theme.components.contentText.textFill.toString() }}
                     >
-                        An Aspiring <br/><span style={{color: theme.components.contentText.emphasizedFill.toString()}} className="xxx-large roboto-mono-bold">Developer</span>.
+                        An Aspiring <br/><span style={{color: theme.components.contentText.emphasizedFill.toString()}} className={`xxx-large roboto-mono-bold`}>Developer</span>.
                     </p>
                     <CustomButtom 
                         mode='transparent-bordered'
@@ -58,10 +58,21 @@ const Home = (props: HomeProps) => {
                 </div>
                 <div
                     className="home-img-container"
+                    style={{
+                        // width: width > 850 ? 400 : 200
+                    }}
                 >
                     <img src={HomeProfilePic} alt="home profile pic" />
                 </div>
             </div>
+            {/* <div
+                className="home-img-container"
+                style={{
+                    width: '100vw'
+                }}
+            >
+                <img src={HomeProfilePic} alt="home profile pic" />
+            </div> */}
         </PageWrapper>
     )
 }

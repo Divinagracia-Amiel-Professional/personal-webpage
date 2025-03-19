@@ -1,7 +1,7 @@
 import React, { CSSProperties, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { multiColor, NavBarProps } from "../constants/typeIndex";
-import { Logo } from "../constants/iconsIndex";
+import { Logo, DownloadRounded } from "../constants/iconsIndex";
 import CustomButtom from "./Button";
 import ThemeButton from "./ThemeButton";
 import Color from "color";
@@ -12,7 +12,7 @@ const getPhoneStyling: CSSProperties = {
     
 }
 
-const NavBar = (props: NavBarProps) => {
+const NavBar = ({ scrollPosition }: NavBarProps) => {
     const { theme, setMode } = useThemeContext()
     const navigate = useNavigate()
     const location = useLocation()
@@ -36,20 +36,23 @@ const NavBar = (props: NavBarProps) => {
         }
     }
 
+
     return (
         <div className="navbar" style={{
-            paddingLeft: width < 800 ? 25 : '15vw',
-            paddingRight: width < 800 ? 35 : '15vw',
-            justifyContent: width > 800 ? 'center' : 'space-between',
-            background: !theme.isDarkMode ? theme.lightTheme.primary.fade(0.9).string() : theme.darkTheme.tertiary.fade(0.9).string(),
-            backdropFilter: "blur(10px)"
+            paddingLeft: width < 850 ? 25 : '15vw',
+            paddingRight: width < 850 ? 35 : '15vw',
+            justifyContent: width > 850 ? 'center' : 'space-between',
+            background: scrollPosition > 50 ? (!theme.isDarkMode ? theme.lightTheme.primary.fade(0.8).string() : theme.darkTheme.tertiary.fade(0.8).string()) : 'none',
+            backdropFilter: `${scrollPosition > 50 ? "blur(10px)" : "none"}`,
+            transition: "background 250ms ease-in-out"
         }}>
+            {/* <p>{scrollPosition}</p> */}
             <CustomButtom 
                 mode='icon-only'
                 text='text'
                 iconPosition="right"
                 showText={false}
-                showIcon={width > 800 ? true : false}
+                showIcon={width > 850 ? true : false}
                 icon={<Logo scale={1.5} fill={theme.components.navBarButtons.iconFill} />}
                 onClick={() => {
                     navigate("/")
@@ -58,7 +61,7 @@ const NavBar = (props: NavBarProps) => {
             <div className="navbar-tabs-block" style={{
                 // background: !theme.isDarkMode ? theme.lightTheme.primary.fade(0.7).string() : theme.darkTheme.tertiary.fade(0.7).string(),
                 // backdropFilter: "blur(10px)"
-                display: width > 800 ? 'flex' : 'none'
+                display: width > 850 ? 'flex' : 'none'
             }}>
                 <div className="navbar-tabs-routes">
                     <CustomButtom 
@@ -90,6 +93,9 @@ const NavBar = (props: NavBarProps) => {
                     borderColor={theme.components.resumeButton.textFill}
                     hoverBgColor={theme.components.resumeButton.backgroundHoverFill}
                     hoverIconColor={theme.components.resumeButton.iconHoverFill}
+                    // icon={<DownloadRounded sx={{color: theme.components.resumeButton.iconFill?.toString(), fontSize: 30}}/>}
+                    // showIcon
+                    // iconPosition="top"
                     textColor={theme.components.resumeButton.textFill}
                     isBorderCurved={true}
                     onClick={() => {

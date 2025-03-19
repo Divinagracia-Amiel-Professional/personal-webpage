@@ -1,6 +1,7 @@
 import React, { ReactNode, useState, useEffect, ElementType, ReactElement, useRef } from 'react'
 import { ButtonProps, SVGParams, multiColor } from '../constants/typeIndex'
 import { SvgIcon, SvgIconProps, SxProps } from '@mui/material'
+import { useWindowDimensions } from '../hooks/hooksIndex'
 import Color from 'color'
 
 const getStyles = (mode: string | undefined): React.CSSProperties => {
@@ -126,6 +127,7 @@ const ButtomWrapper = ({
 }: Omit<ButtomWrapperProps, 'text'>) => {
     const childrenPositions = (iconPosition === "right" || iconPosition === "bottom") ? children : React.Children.toArray(children).reverse()
 
+
     console.log(isInside)
 
     const getBGFill = () => {
@@ -149,17 +151,20 @@ const ButtomWrapper = ({
         }
     }
 
+    // ${ isInside ? "expand-selected" : " " }`
+
     return(
         <div 
             ref={divRef}
-            className='custom-button'
+            className={`custom-button custom-button-transprop simple-transition faster`}
             style={{
                 display: showIcon || showText ? 'flex' : 'none',
+                gap: isInside ? 20 : 10,
                 flexDirection: (iconPosition === 'left' || iconPosition === 'right') ? 'row' : 'column' ,
                 border: getBorderFill(),
                 borderRadius: isBorderCurved ? 15 : 0,
                 background: getBGFill(),
-                ...getStyles(mode)
+                ...getStyles(mode),
             }}
             onClick={() => {
                 onClick()
@@ -189,6 +194,7 @@ const CustomButtom = ({
 }: ButtonProps) => {
     const [ isHovering, setIsHovering ] = useState<boolean>(false)
     const { divRef, isInside } = useIsPointerInside()
+    const { height, width } = useWindowDimensions()
     let IconComponent: ReactNode = null
 
     const toggleHoverState = () => {
@@ -196,7 +202,6 @@ const CustomButtom = ({
             setIsHovering(prevState => !prevState)
         }
     }
-
 
     if(icon){
         if(React.isValidElement(icon)){
@@ -209,6 +214,8 @@ const CustomButtom = ({
                         sx: { 
                             ...(muiIcon.props.sx || {}),
                             color: hoverIconColor && isInside ? hoverIconColor.toString() : muiIcon.props.sx?.color,
+                            transitionProperty: "color",
+                            transition: "0.25s ease-in-out"
                         },
                         
                     }
@@ -247,7 +254,7 @@ const CustomButtom = ({
             isInside={isInside}
         >
             <p 
-                className={`${mode === 'text-only' ? 'roboto-mono-regular regSize' : 'lexend-regular large'}`}
+                className={`${mode === 'text-only' ? 'roboto-mono-regular regSize' : `lexend-regular large`} text-transprop faster`}
                 style={{
                     display: showText ? 'block' : 'none',
                     color: hoverIconColor && isInside ? hoverIconColor.toString() : textColor.string(),

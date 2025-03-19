@@ -56,7 +56,7 @@ const Contacts = (props: ContactsProps) => {
 
     return(
         <div
-            className="contacts-block"
+            className="contacts-block custom-button-transprop faster"
             style={{
                 background: theme.components.contactButtons.backgroundFill.toString()
             }}
@@ -68,7 +68,10 @@ const Contacts = (props: ContactsProps) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 0,
+                    overflow: 'hidden',
+                    width: isExpanded ? 400 : 55,
                     borderRadius: 20,
+                    transition: "width 0.5s ease-in-out"
                 }}
             >
                 {
@@ -109,10 +112,12 @@ const Contacts = (props: ContactsProps) => {
                                 <p 
                                     className="small roboto-mono-regular"
                                     style={{
-                                        display: isExpanded ? 'block' : 'none', 
+                                        // display: isExpanded ? 'block' : 'none',
+                                        opacity: isExpanded ? 1 : 0, 
                                         paddingRight: 15, 
                                         wordWrap: 'break-word',
                                         color: theme.components.contactButtons.textFill.toString(),
+                                        transition: "opacity 0.5s ease-in-out, color 0.25s ease-in-out"
                                     }}
                                 >
                                     {contactLinkText}

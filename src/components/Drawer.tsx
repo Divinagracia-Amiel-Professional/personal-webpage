@@ -1,5 +1,5 @@
-import React, { useState, KeyboardEvent, MouseEvent, useContext, memo } from "react";
-import { Drawer, Box, List, ListItem, ListItemText, ListItemButton } from "@mui/material";
+import React, { useState, KeyboardEvent, MouseEvent, useContext, memo, ReactElement } from "react";
+import { Drawer, Box, List, ListItem, ListItemText, ListItemButton, SvgIconProps } from "@mui/material";
 import { MenuIcon } from "../constants/iconsIndex";
 import CustomButtom from "./Button";
 import { useWindowDimensions } from "../hooks/hooksIndex"
@@ -17,6 +17,11 @@ type DrawerState = {
 }
 
 var trigger = 0
+
+type DrawerListItems = {
+    route: string,
+    icon: ReactElement<SvgIconProps>
+}
 
 const CollapsableNavbarDrawer = () => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -100,7 +105,7 @@ const CollapsableNavbarDrawer = () => {
             <div
                 style={{
                     padding: 10,
-                    display: width < 800 ? 'flex' : 'none'
+                    display: width < 850 ? 'flex' : 'none'
                 }}
                 onClick={toggleOpenDrawer(true)}
             >

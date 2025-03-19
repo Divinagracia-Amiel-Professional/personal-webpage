@@ -1,0 +1,94 @@
+@keyframes slide {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(200px); }
+    100% { transform: translateX(0); }
+  }
+
+@keyframes unselectAnim {
+    0% { gap: 20px }
+    100% { gap: 10px }
+}
+
+@keyframes shrink {
+    to {
+        font-size: 10;
+    }
+}
+
+@keyframes expand {
+    to {
+        font-size: 30;
+    }
+}
+
+.simple-transition {
+    transition: 0.5s ease-in-out;
+}
+
+.faster {
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.25s;
+}
+
+.regSpeed {
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.5s;
+}
+
+.slower{
+    transition-timing-function: ease-in-out;
+    transition-duration: 1s;
+}
+
+.custom-button-transprop {
+    transition-property: background-color, gap, border, transform;
+}
+
+.background-image-transprop {
+    transition-property: background-image;
+}
+
+.text-transprop {
+    transition-property: color;
+}
+
+p, span, br, li{
+    transition-property: color;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.25s;
+}
+  
+.moving-box {
+    /* width: 100px;
+    height: 100px;
+    background-color: blue;
+    position: relative; */
+    animation: selectedButton 1s infinite ease-in-out;
+}
+
+/* infinite keyword means looping animation */
+/* forwards keyword means stay on after anim property*/
+
+.animation-button{
+    animation: expand 0.5s ease-in-out both;
+    animation-play-state: paused;
+}
+
+/* .animation-button:hover {
+    animation-direction: normal;
+    animation-play-state: running;
+}
+
+.animation-button:not(:hover) {
+    animation-direction: reverse;
+    animation-play-state: running;
+} */
+
+.expand-selected{
+    gap: 20px
+}
+
+.shrink-selected{
+    animation-direction: reverse;
+    animation-play-state: running;
+}

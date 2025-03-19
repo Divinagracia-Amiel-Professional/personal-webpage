@@ -1,7 +1,7 @@
 import React, { CSSProperties, ReactElement, useContext, useState, useEffect, useMemo } from "react";
 import { ProjectProps } from "../constants/typeIndex";
 import { PageWrapper, CustomButtom} from "../components/componentIndex";
-import { useThemeContext } from "../hooks/hooksIndex";
+import { useThemeContext, useWindowDimensions } from "../hooks/hooksIndex";
 import { ChevronRightRounded, ChevronLeftRounded } from "../constants/iconsIndex";
 import { SxProps } from "@mui/material";
 import { Modal } from "@mui/material";
@@ -68,7 +68,21 @@ const projectsObjects: Omit<ProjectBlockProps, 'index'>[] = [
             HomeAssistantImg6,
         ],
         link: "https://github.com/Divinagracia-Amiel-Professional/home-assistant-simplified-web"
-    }
+    },
+    // {
+    //     title: "Personal Webpage",
+    //     details: "Intelliwatt is a web application that was developed for our thesis project, which is a viable and efficient home energy management system that has the capability to monitor, log, control, alarm and manage household devices and their variables. This app utilized the open-source home automation framework ‘Home Assistant’ for data gathering and control. React was then used for creating an intuitive custom dashboard using REST API to receive data from Home Assistant. My role in this project was as the lead frontend and backend developer for the web application side.",
+    //     logoUrl: HomeAssistantLogo,
+    //     imgUrls: [
+    //         HomeAssistantImg1,
+    //         HomeAssistantImg2,
+    //         HomeAssistantImg3,
+    //         HomeAssistantImg4,
+    //         HomeAssistantImg5,
+    //         HomeAssistantImg6,
+    //     ],
+    //     link: "https://github.com/Divinagracia-Amiel-Professional/home-assistant-simplified-web"
+    // }
 ]
 
 const initItems = (
@@ -220,6 +234,7 @@ const ProjectBlock = ({
 }: ProjectBlockProps) => {
     const { theme, setMode } = useThemeContext()
     const [ open, setOpen ] = useState<boolean>(false) 
+    const { width, height } = useWindowDimensions()
     const setToggle = () => {
         setOpen(prevState => !prevState)
     }
@@ -229,7 +244,10 @@ const ProjectBlock = ({
     return(
         <div
             className="project-block"
-            style={{flexDirection: index % 2 === 0 ? 'row' : 'row-reverse'}}
+            style={{
+                flexDirection: width > 850 ? (index % 2 === 0 ? 'row' : 'row-reverse') : 'column',
+                gap: width > 850 ? 10 : 50
+            }}
         >
             <div
                 className="project-details"
@@ -240,7 +258,7 @@ const ProjectBlock = ({
                     <img src={logoUrl} alt={logoUrl} />
                 </div>
                 <p
-                    className="project-details-title x-large lexend-bold"
+                    className={`project-details-title x-large lexend-bold`}
                     style={{
                         color: theme.components.contentText.textFill.toString()
                     }}
@@ -250,7 +268,7 @@ const ProjectBlock = ({
                     style={{
                         color: theme.components.contentText.textFill.toString(),
                         marginBottom: 20
-                    }} className="project-details-body regSize roboto-mono-regular"
+                    }} className={`project-details-body regSize roboto-mono-regular`}
                 > {details}</p>
                 <CustomButtom 
                     mode='transparent-bordered'

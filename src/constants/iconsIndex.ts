@@ -12,7 +12,8 @@ import {
     ChevronRightRounded,
     ChevronLeftRounded,
     OpenInFullRounded,
-    CloseFullscreenRounded
+    CloseFullscreenRounded,
+    DownloadRounded
 } from "@mui/icons-material";
 
 export {
@@ -29,5 +30,6 @@ export {
     ChevronRightRounded,
     ChevronLeftRounded,
     OpenInFullRounded,
-    CloseFullscreenRounded
+    CloseFullscreenRounded,
+    DownloadRounded
 }

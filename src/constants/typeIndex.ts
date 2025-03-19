@@ -52,7 +52,7 @@ type ContactsProps = {
 }
 
 type NavBarProps = {
-
+    scrollPosition: number
 }
 
 type multiColor = Color[]
